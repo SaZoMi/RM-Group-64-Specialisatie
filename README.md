@@ -5,7 +5,7 @@
 | Boey | Simon | TIN-2A1     | [SimonByy](https://github.com/SimonByy) |
 | Saric | Milan | TIN-2A1     | [UserName](https://github.com/UserName) |
 | De Pelsmaeker | Emiel | TIN-2A1     | [UserName](https://github.com/UserName) |
-| Borghart | Simon | TIN-2A1     | [UserName](https://github.com/UserName) |
+| Borghart | Simon | TIN-2A1     | [UserName](https://github.com/simonborghart) |
 
 ## TODOs
 
