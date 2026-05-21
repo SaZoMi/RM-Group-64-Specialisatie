@@ -2,120 +2,112 @@
 % Research Methods - Group assignment - proposals
 %==============================================================================
 
-% This loads the article template. For a text written in English, add the
-% "english" option, i.e. \documentclass[english]{hogent-article}
 \documentclass{hogent-article}
 
-% Include bibliography file
 \addbibresource{references.bib}
 
-% Info about the assignment, course and study programme
-
 \studyprogramme{Professionele bachelor toegepaste informatica}
-% TODO: replace 2N1 with the correct class group(s)!
-\course{Research Methods, 2N1} 
+\course{Research Methods, 2N1}
 \assignmenttype{Groepsopdracht}
 \academicyear{2025-2026}
 \title{Schriftelijke voorbereiding onderzoeksvoorstellen}
 
-% TODO: English text? Comment or remove the lines above and uncomment the lines
-% below
-
-% \studyprogramme{Professional bachelor in applied informatics}
-% \course{Research Methods, INT-IT/2B}
-% \assignmenttype{Group assignment}
-% \academicyear{2025-2026}
-% \title{Written preparation of research proposals}
-
-% TODO: Replace student names and email addresses
 \author{Erdener Bayramoglu}
 \email{erdener.bayramoglu@student.hogent.be}
 
-\author{Clara  Bekaert}
+\author{Clara Bekaert}
 \email{clara.bekaert@student.hogent.be}
 
-\author{Sanya  Golovina}
+\author{Sanya Golovina}
 \email{sanya.golovina@student.hogent.be}
 
 \author{Bavo Van Ginderen}
 \email{bavo.vanginderen@student.hogent.be}
 
-% TODO: Link your Github-repository here
 \projectrepo{https://github.com/HoGentTIN/rm-25-26-groep-00}
 
-% TODO: Choose the appropriate specialization from the list below, 
-%
-% - Mobile \& Enterprise development
-% - AI \& Data Engineering
-% - Functional \& Business Analysis
-% - System \& Network Engineering
-% - Mainframe Expert
-%
-% - If your research does not fit into any of these domains, specify a specialization yourself.
-%
-\specialisation{Mobile \& Enterprise development}
+\specialisation{AI \& Data Engineering}
 
-% TODO: choose some appropriate keywords for your research proposals
-\keywords{Scheme, World Wide Web, $\lambda$-calculus}
+\keywords{AI-agents, toegangscontrole, runtime-validatie, LLM-beveiliging, financiële sector}
 
 \begin{document}
 
-% TODO: Replace the dummy text below with the actual contents of your research
-% proposal. **ALSO REPLACE THE HEADING TITLES BY APPROPRIATE ONES!** The
-% current headings are just placeholders.
 \begin{abstract}
-  Wij presenteren het éérste onderzoek naar radiofrequente interferentie (RFI) op de toekomstige locatie van de laagfrequente Square Kilometre Array (SKA), het Murchison Radio-astronomie Observatorium (MRO), dat de RFI zowel in de tijd als ruimtelijk oplost.  Het onderzoek wordt uitgevoerd in een frequentiebereik van 1 MHz binnen de FM-band, ontworpen om de dichtstbijzijnde en sterkste FM-zenders van de MRO (gevestigd in Geraldton, op ongeveer 300 km afstand) te omvatten.  Gedurende ongeveer drie dagen, met gebruikmaking van de tweede iteratie van de Engineering Development Array in een ``all-sky imaging mode'', hebben we een reeks RFI-signalen gevonden.  We kunnen de signalen categoriseren in: signalen die rechtstreeks van de zenders worden ontvangen, vanaf hun horizonlocaties; reflecties van vliegtuigen (die ongeveer 13\% van de waarnemingsduur in beslag nemen); reflecties van objecten in een baan om de aarde; en reflecties van meteoor-ionisatiesporen.  In totaal analyseren we 33.994 beelden met een tijdresolutie van 7,92 s in beide polarisaties en een hoekresolutie van ongeveer 3,5$^{\circ}$, waarbij ongeveer veertigduizend RFI-gebeurtenissen worden gedetecteerd.  Deze gedetailleerde uitsplitsing van RFI in de MRO-omgeving zal toekomstige gedetailleerde analyses mogelijk maken van de waarschijnlijke gevolgen van RFI voor belangrijke wetenschap bij lage radiofrequenties met de SKA.
+Dit onderzoek richt zich op de beveiliging van autonome AI-agents binnen financiële instellingen. Naarmate banken steeds vaker gebruik maken van LLM-agents voor interne processen, rijzen er ernstige vragen over ongeoorloofde datatoegang. Bestaande beveiligingsmethoden zijn ontworpen voor mensen of traditionele software, maar bieden onvoldoende bescherming tegen de unieke risico's die autonome agents met zich meebrengen. Dit onderzoek combineert een literatuurstudie van bestaande toegangscontrolemethoden en gedragsmonitoringtechnieken met een proof of concept waarin een combinatie van toegangsbeperkingen en runtime-validatie wordt getest op gesimuleerde financiële data.
 \end{abstract}
 
 \tableofcontents
 
-\section{Introduction}%
-\label{sec:introduction}
+%----------------------------------------------------------------------
+\section{Inleiding / Casus}
+\label{sec:inleiding}
+%----------------------------------------------------------------------
 
-De laatste jaren is veel onderzoek gewijd aan de uitrol van het Internet; helaas hebben slechts weinigen onderzoek gedaan naar de simulatie van wide area netwerken~\autocite{Hykes2013}. In deze position paper ont\-krach\-ten we het begrip van het World Wide Web. De notie dat theoretici meewerken aan de verbetering van gerandomiseerde algoritmen wordt meestal belangrijk geacht. De analyse van lambda calculus zou de verfijning van het World Wide Web enorm vergroten.
+Autonome AI-agents worden als maar meer ingezet binnen bedrijven. Ze kunnen zelfstandig beslissingen nemen en acties uitvoeren zonder dat iemand daar enige goedkeuring voor moet geven. In maart 2026 veroorzaakte zo'n AI-agent een zwaar beveiligingsincident binnen het bedrijf Meta~\autocite{Guardian2026}. Een medewerker van Meta vroeg hulp aan de agent via een intern forum en in plaats van gewoon op de vraag te antwoorden, plaatste de agent het antwoord direct op het forum. Hierna volgde de medewerker nog wat foute instructies van de agent op en vervolgens was er bijna 2 uur lang gevoelige data van het bedrijf zichtbaar voor heel wat mensen zonder de juiste toegangsrechten~\autocite{CyberMagazine2026}. De kern van dit probleem lag natuurlijk bij het hebben van te veel autonomie van de AI-agent en de te weinige toegangscontroles. Als dit al kan gebeuren bij een van de meest technologisch geavanceerde bedrijven van de wereld, wat zijn de risico's dan in de financiële sector? Banken werken met nog veel gevoeligere data en vallen onder een strengere regelgeving en deze beginnen ook AI-agents in te zetten in hun interne processen. Op dit moment bestaat er nog geen standaardaanpak om AI-agents binnen financiële instellingen veilig toegang te geven tot interne systemen en data. Bestaande beveiligingsmethoden zijn ontworpen voor mensen of traditionele software, maar niet voor autonome AI-agents die zelfstandig nadenken en acties uitvoeren. Dit onderzoek richt zich op IT-security teams binnen de financiële sector en stelt de vraag: hoe kunnen banken hun data beter beschermen tegen ongeoorloofde toegang door LLM-agents, met een combinatie van toegangscontrole en runtime-validatie, gevalideerd via een proof of concept?
 
-\begin{align*}
-  f(x) &= x^2\\
-  \mathbf{ g(x) } &= \frac{1}{x}\\
-   F(x)  &= \int^a_b \frac{1}{3}x^3\\
-\end{align*}
+%----------------------------------------------------------------------
+\section{Hoofdonderzoeksvraag}
+\label{sec:hoofdonderzoeksvraag}
+%----------------------------------------------------------------------
 
-Wij bevestigen dat het veel aangeprezen certificeerbare algoritme voor de constructie van online algoritmen door Lee en Davis loopt in $\Theta(n^2)$ tijd. Het lijkt op het eerste gezicht pervers maar het viel in met onze verwachtingen. Bestaande lossless en coöperatieve heuristieken gebruiken superblocks om DHCP in te zetten. Maar, twee eigenschappen maken deze oplossing perfect: YnowHip simuleert alomtegenwoordige symmetrieën, en bovendien biedt YnowHip gerepliceerde symmetrieën. Deze combinatie van eigenschappen is nog niet verbeterd in eerder werk.
+Hoe kunnen banken hun data beter beschermen tegen ongeoorloofde toegang door LLM-agents, met een combinatie van toegangscontrole en runtime-validatie, gevalideerd via een proof of concept?
 
-\section{Framework}%
-\label{sec:framework}
+%----------------------------------------------------------------------
+\section{Methodologie oplossingsdeelvragen}
+\label{sec:methodologie}
+%----------------------------------------------------------------------
 
-Veronderstel dat er een multimodale theorie bestaat, zodat we gemakkelijk write-ahead logging kunnen bestuderen. Elke typische evaluatie van Scheme zal duidelijk vereisen dat SMP's alomtegenwoordig, psychoakoestisch, en mobiel kunnen worden gemaakt; onze benadering is niet anders. Ondanks de resultaten van P. U. Williams, kunnen we bevestigen dat webbrowsers event-driven kunnen worden gemaakt, homogeen, en heterogeen kunnen worden gemaakt. Daarom is het ontwerp dat YnowHip gebruikt stevig verankerd in de realiteit. Ondanks het feit dat het volledig een bevestigd doel is, heeft het een ruime historische precedent.
+\subsection{DV5: Welke methoden bestaan er om de toegang van autonome AI-agents tot interne systemen te beperken, en wat zijn de voor- en nadelen van elke methode?}
 
-\section{Implementation}%
-\label{sec:implementation}
+\textbf{Fase 1: literatuurstudie}
 
-Hoewel veel sceptici zeiden dat het niet mogelijk was (met name Wilson en Moore), beschrijven wij een volledig werkende versie van ons systeem. Bovendien, was het nodig om de instructie snelheid die door ons raamwerk wordt gebruikt te beperken tot 30 pagina's. De met de hand geoptimaliseerde compiler bevat ongeveer 403 instructies van ML. Onze oplossing bestaat uit een client-side bibliotheek, een verzameling shell scripts, en een eigen database. Evenzo bevat de verzameling van shell scripts bevat ongeveer 52 instructies van~\textcite{LewisFowler2014}. Over het geheel genomen, voegt YnowHip slechts bescheiden overhead en complexiteit toe aan eerdere adaptieve systemen.
+Om een overzicht te krijgen van bestaande toegangscontrolemethoden voor autonome AI-agents, wordt een literatuuronderzoek uitgevoerd op volgende bronnen. In de paper van \textcite{Fleming2024} wordt een systeem beschreven waarbij een externe AI als bewaker wordt ingezet. De externe AI is gespecialiseerd in het verdelen van rechten aan andere agents en deze beslist ook welke agent welke rechten en toegangen krijgt. Dit biedt een eventuele flexibele en adaptieve manier om het probleem op te lossen. In een andere paper \autocite{Ji2026} wordt een verplicht toegangscontrolesysteem voorgesteld op basis van ABAC, toegang op basis van kenmerken van de gebruiker, het systeem en de data. Dit systeem houdt bij welke informatie naar waar stroomt en blokkeert alle acties die verder gaan dan wat de gebruiker bedoelde. Dit is zeer nauwkeurig en aanpasbaar, maar wel heel complex om te installeren in een draaiend systeem. In een derde paper \autocite{Shi2025} wordt Progent beschreven. Dit is een systeem dat via programmeerbare regels bepaalt wat een AI-agent wel en niet mag doen. Dit systeem schijnt makkelijk toepasbaar te zijn op bestaande systemen, maar de regels moeten vooraf bepaald en ingesteld worden door een mens, waardoor configuratiefouten snel gemaakt worden.
 
-\section{Results}%
-\label{sec:results}
+\textbf{Fase 2: Vergelijkingstabel opstellen}
 
-Onze prestatie-analyse\footnote{Zie \url{https://github.com/some/repo}} vormt op zichzelf al een waardevolle onderzoeksbijdrage. Onze algemene evaluatiestrategie tracht drie hypotheses te bewijzen: (1) dat hashtabellen niet langer het systeemontwerp beïnvloeden; (2) dat de partitietabel niet langer de prestaties beïnvloedt; en tenslotte (3) dat de interrupt rate constant is ge\-ble\-ven over opeenvolgende generaties van Commodore 64's. Onze evaluatie is erop gericht deze punten duidelijk te maken:
+De gevonden methoden worden naast elkaar gezet en vergeleken op basis van enkele criteria zoals complexiteit, effectiviteit en toepasbaarheid in financiële instellingen. Zo gaan we in één oogopslag kunnen zien welke methode het beste past in deze context. Het resultaat is een shortlist van de meest geschikte methoden die verder uitgewerkt worden in de proof of concept.
 
-\begin{verbatim}
-  public class Greeter {
-    public static void main() {
-      System.out.println("Hello world!");
-    }
-  }
-\end{verbatim}
+\subsection{DV6: Op welke manieren kan het gedrag van een autonome AI-agent tijdens zijn werking gecontroleerd worden om ongeautoriseerde datatoegang te detecteren of te stoppen?}
 
-\section{Analysis}%
-\label{sec:analysis}
+\textbf{Fase 1: literatuurstudie}
 
-Is het mogelijk te rechtvaardigen dat we in sectie \ref{sec:results} weinig aandacht hebben besteed aan onze uitvoering en experimentele opzet? Ja, maar alleen in theorie. Met deze overwegingen in het achterhoofd, hebben we vier nieuwe experimenten uitgevoerd: (1) we gemeten de ruimte op de optische schijf als functie van de ROM verwerkingscapaciteit op een IBM PC Junior; (2) we maten de snelheid van de harde schijf als functie van het flash-geheugen geheugenruimte op een UNIVAC; (3) we vroegen (en antwoordden) wat er zou gebeuren als computationeel stochastische glasvezelkabels zouden worden gebruikt in plaats van checksums; en (4) we hebben YnowHip getest op onze eigen desktop machines, met bijzondere aandacht voor de ruimte op de tapedrive. We hebben de resultaten van enkele eerdere experimenten, met name toen we tape drive doorvoer als functie van de snelheid van het bandstation op een Motorola bag telefoon.
+Om een overzicht te krijgen van bestaande technieken voor het controleren van het gedrag van autonome AI-agents tijdens hun werking, wordt een literatuuronderzoek uitgevoerd op volgende bronnen. In de wetenschappelijke paper van \textcite{Wang2025} wordt ProbGuard beschreven, een systeem dat het gedrag van een AI-agent tijdens zijn werking continu in de gaten houdt. Er wordt door dit systeem op voorhand voorspeld of een actie van de agent onveilig zal zijn en grijpt in voor het fout loopt. Dit is anders dan klassieke foutdetectie methodes die pas ingrijpen als het al fout is gegaan. In het officieel document van de Amerikaanse overheid \autocite{Rose2024} wordt het principe van ``Zero Trust'' beschreven. Dit betekent dat geen enkel systeem of gebruiker automatisch vertrouwd wordt, ook niet binnen interne netwerken. Alle acties moeten continu geverifieerd worden en voor AI-agents betekent dit dat elke datatoegang apart gecontroleerd en gelogd moet worden.
 
-Nu de climaxanalyse van experimenten (3) en (4) die hierboven. Hoewel het nooit een uitgebreid doel is, is het afgeleid van bekende resultaten. Foutbalken zijn weggelaten, omdat de meeste van onze datapunten vielen buiten de 84 standaardafwijkingen van de waargenomen gemiddelden vielen. Gaussian elektromagnetische storingen in ons systeem veroorzaakten onstabiele experimentele resultaten. Wij hadden nauwelijks voorzien hoe nauwkeurig onze resultaten in deze fase van de evaluatiemethode.
+\textbf{Fase 2: Overzicht van controletechnieken opstellen}
 
-\section{Conclusions}%
-\label{sec:conclusions}
+Op basis van de literatuurstudie worden de gevonden controletechnieken naast elkaar gezet en vergeleken op basis van criteria zoals wanneer ze ingrijpen, hoe ze samenwerken met bestaande systemen en of ze toepasbaar zijn in een financiële omgeving. Het resultaat is een overzicht van de meest geschikte technieken die verder gebruikt worden in de proof of concept.
 
-In dit artikel hebben we aangetoond dat Sche\-me en write-ahead logging zelden incompatibel zijn. Om dit te bereiken voor kernels, beschreven we een nieuw raamwerk voor de constructie van virtuele machines. Ons systeem kan met succes vele compilers tegelijk aansturen. De visualisatie van e-commerce is belangrijker dan ooit, en onze methodologie helpt eindgebruikers precies dat te doen.
+\subsection{DV7: Welke bestaande richtlijnen of standaarden bieden concrete aanbevelingen voor het beveiligen van autonome AI-agents binnen gereguleerde omgevingen?}
+
+\textbf{Fase 1: literatuurstudie}
+
+Om een overzicht te krijgen van bestaande richtlijnen en standaarden die concrete aanbevelingen bieden voor het beveiligen van autonome AI-agents binnen gereguleerde omgevingen, worden volgende officiële documenten en erkende industriestandaarden geanalyseerd. Het framework van \textcite{Tabassi2023} beschrijft hoe organisaties AI-risico's kunnen beheren via vier stappen: Govern, Map, Measure en Manage. Het geeft concrete aanbevelingen over hoe je AI-systemen veilig en verantwoord inzet, ook in gereguleerde omgevingen. Het OWASP document \autocite{OWASP2025} somt de tien grootste beveiligingsrisico's op voor LLM-toepassingen, zoals prompt injectie en buitensporige agent autonomie. Per risico worden concrete aanbevelingen gegeven zoals least-privilege toegang en continue monitoring. We gebruiken ook opnieuw het officiële document van de Amerikaanse overheid \autocite{Rose2024} dat het principe van ``Zero Trust'' beschrijft. In het document \autocite{GDPR2016} kunnen we vinden dat de GDPR verplichtingen rond toegangscontrole, logging en dataminimalisatie oplegt. Voor AI-agents betekent dit dat ze alleen toegang mogen krijgen tot de data die strikt noodzakelijk is. In het officiële document \autocite{DORA2022} kunnen we vinden dat DORA specifieke eisen aan financiële instellingen rond digitale weerbaarheid, incidentbeheer en toegangscontrole oplegt. Dit is direct relevant voor het beveiligen van AI-agents binnen banken.
+
+\textbf{Fase 2: Vergelijking en prioritering van richtlijnen}
+
+Op basis van de literatuurstudie worden de gevonden richtlijnen en standaarden naast elkaar geplaatst en beoordeeld op basis van criteria zoals toepasbaarheid op autonome AI-agents, verplicht karakter binnen financiële instellingen en concreetheid van de aanbevelingen. Via een MoSCoW-analyse wordt bepaald welke aanbevelingen absoluut noodzakelijk zijn voor de proof of concept en welke optioneel zijn. Het resultaat is een geprioriteerde lijst van beveiligingseisen waaraan de oplossing moet voldoen.
+
+\subsection{DV8: Hoe effectief is een combinatie van toegangsbeperkingen en gedragscontrole in het voorkomen van ongeautoriseerde datatoegang door autonome AI-agents, getest via een proof of concept met gesimuleerde financiële data?}
+
+\textbf{Fase 1: Opzetten van de testomgeving}
+
+Om de effectiviteit van de geselecteerde beveiligingsmaatregelen te kunnen meten, zal een proof of concept worden opgezet. Hierbij zal een autonome AI-agent worden geconfigureerd die toegang heeft tot een gesimuleerde interne omgeving met fictieve financiële data. De beveiligingsmaatregelen die als meest geschikt werden geselecteerd uit DV5 en DV6 zullen op deze omgeving worden toegepast. De testomgeving zal zo worden ingericht dat ze de structuur van een intern banksysteem zo realistisch mogelijk nabootst, zonder gebruik te maken van echte klantgegevens.
+
+\textbf{Fase 2: Uitvoeren van de tests}
+
+Binnen de opgezette testomgeving zullen gerichte aanvalspogingen worden gesimuleerd om de effectiviteit van de beveiligingsmaatregelen te meten. Hierbij zal gedacht worden aan aanvallen zoals prompt injectie, ongeautoriseerde data-opvragingen en pogingen om de toegangscontrole te omzeilen. Per aanvalspoging zal worden bijgehouden of de beveiligingsmaatregel de toegang succesvol blokkeerde of detecteerde. Dit zal herhaald worden voor elke combinatie van maatregelen zodat een eerlijke vergelijking mogelijk is.
+
+\textbf{Fase 3: Evaluatie van de resultaten}
+
+Op basis van de uitgevoerde tests zullen de resultaten worden geanalyseerd en samengevat. Er zal worden berekend welk percentage van de gesimuleerde aanvalspogingen succesvol werd geblokkeerd of gedetecteerd door de beveiligingsmaatregelen. Daarnaast zullen de sterktes en zwaktes van de geteste combinatie van maatregelen worden beschreven. Het resultaat is een onderbouwde conclusie over welke combinatie van toegangsbeperkingen en gedragscontrole de meest effectieve bescherming biedt tegen ongeautoriseerde datatoegang door autonome AI-agents in financiële instellingen, en vormt zo het antwoord op de hoofdonderzoeksvraag.
+
+\textbf{Fase 4: Ontwerp en implementatie van de oplossing}
+
+Op basis van de methoden die in DV5 en DV6 werden geselecteerd, wordt in deze fase de beveiligingsoplossing verder uitgewerkt en effectief geïmplementeerd. Het ontwerp steunt op het principe van Separation of Concerns, een aanpak die al geruime tijd gebruikt wordt binnen softwareontwikkeling \autocite{South2025}, maar nog nauwelijks werd toegepast bij autonome AI-agents. Daarbij krijgt elke agent enkel toegang tot de gegevens en functies die nodig zijn om zijn specifieke taak uit te voeren. Een agent die verantwoordelijk is voor het ophalen van rekeninginformatie zal bijvoorbeeld geen toegang hebben tot fraudedetectie gegevens of interne audit logs. Om te vermijden dat alle toegangscontrole afhankelijk wordt van één centrale instantie, wordt gewerkt met een verdeeld beslissingsmodel op basis van een stemsysteem. Wanneer een agent tijdelijk bijkomende rechten nodig heeft, dient die een aanvraag in bij een groep andere agents. Die beoordelen vervolgens, op basis van de huidige context, of de aanvraag gerechtvaardigd is. Enkel wanneer voldoende agents akkoord gaan, worden de extra rechten tijdelijk toegekend. Op die manier wordt vermeden dat een foutief geconfigureerde of gecompromitteerde agent zelfstandig toegang kan verkrijgen tot informatie buiten zijn normale bevoegdheden. Daarnaast wordt runtime-monitoring geïntegreerd, zodat de activiteiten van de agents tijdens hun werking continu opgevolgd kunnen worden. Het eindresultaat van deze fase is een volledig werkende en gedocumenteerde implementatie die klaar is voor verdere testing.
+
+\textbf{Fase 5: Testen met Langfuse}
+
+Om de uitgevoerde tests op een overzichtelijke en controleerbare manier te evalueren, wordt gebruikgemaakt van Langfuse als observabilityplatform. Deze tool werd specifiek ontwikkeld voor de toepassingen met LLM's en registreert elke stap die een AI-agent uitvoert. Daarbij wordt onder meer vastgelegd welke data werd opgevraagd, welke tools werden gebruikt en wat de input en output van elke actie was. Hierdoor kan na een gesimuleerde aanval nauwkeurig worden nagegaan hoe de agent handelde, op welk moment het beveiligingssysteem tussenkwam en of de toegang correct werd geblokkeerd of gedetecteerd. Binnen de testomgeving worden verschillende aanvalsscenario's nagebootst, zoals promptinjectie, ongeautoriseerde data-aanvragen en pogingen om bestaande toegangscontroles te omzeilen. Elke test wordt volledig gelogd via Langfuse en daarna grondig geanalyseerd. Daarbij wordt per aanval bekeken of de beveiligingsmaatregelen correct reageerden en, indien dat niet het geval was, waar het precies fout liep. Dit proces wordt herhaald voor alle combinaties van beveiligingsmaatregelen, zodat de resultaten op een consistente en objectieve manier met elkaar vergeleken kunnen worden. Daarnaast maakt Langfuse het mogelijk om de verzamelde gegevens visueel weer te geven. Dat zorgt voor een duidelijker overzicht van de testresultaten en vereenvoudigt zowel de evaluatie als de uiteindelijke rapportering.
 
 \printbibliography[heading=bibintoc]
 
