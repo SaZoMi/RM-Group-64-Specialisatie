@@ -29,7 +29,9 @@
 \specialisation{AI \& Data Engineering}
 
 \keywords{AI-agents, toegangscontrole, runtime-validatie, LLM-beveiliging, financiële sector}
-
+\sloppy
+\hbadness=10000
+\frenchspacing
 \begin{document}
 
 \begin{abstract}
@@ -39,124 +41,127 @@ Dit onderzoek richt zich op de beveiliging van autonome AI-agents binnen financi
 \tableofcontents
 
 %----------------------------------------------------------------------
-\section{Inleiding / Casus}
-\label{sec:inleiding}
+\section{Inleiding}\label{sec:inleiding}
 %----------------------------------------------------------------------
 
-Autonome AI-agents worden als maar meer ingezet binnen bedrijven. Ze kunnen zelfstandig beslissingen nemen en acties uitvoeren zonder dat iemand daar enige goedkeuring voor moet geven. In maart 2026 veroorzaakte zo'n AI-agent een zwaar beveiligingsincident binnen het bedrijf Meta~\autocite{Guardian2026}. Een medewerker van Meta vroeg hulp aan de agent via een intern forum en in plaats van gewoon op de vraag te antwoorden, plaatste de agent het antwoord direct op het forum. Hierna volgde de medewerker nog wat foute instructies van de agent op en vervolgens was er bijna 2 uur lang gevoelige data van het bedrijf zichtbaar voor heel wat mensen zonder de juiste toegangsrechten~\autocite{CyberMagazine2026}. De kern van dit probleem lag natuurlijk bij het hebben van te veel autonomie van de AI-agent en de te weinige toegangscontroles. Als dit al kan gebeuren bij een van de meest technologisch geavanceerde bedrijven van de wereld, wat zijn de risico's dan in de financiële sector? Banken werken met nog veel gevoeligere data en vallen onder een strengere regelgeving en deze beginnen ook AI-agents in te zetten in hun interne processen. Op dit moment bestaat er nog geen standaardaanpak om AI-agents binnen financiële instellingen veilig toegang te geven tot interne systemen en data. Bestaande beveiligingsmethoden zijn ontworpen voor mensen of traditionele software, maar niet voor autonome AI-agents die zelfstandig nadenken en acties uitvoeren. Dit onderzoek richt zich op IT-security teams binnen de financiële sector en stelt de vraag: hoe kunnen banken hun data beter beschermen tegen ongeoorloofde toegang door LLM-agents, met een combinatie van toegangscontrole en runtime-validatie, gevalideerd via een proof of concept?
+Autonome AI-agents worden steeds meer ingezet binnen bedrijven. Ze kunnen zelfstandig beslissingen nemen en acties uitvoeren zonder dat iemand daar enige goedkeuring voor moet geven. In maart 2026 veroorzaakte zo'n AI-agent een zwaar beveiligingsincident binnen het bedrijf Meta~\autocite{Guardian2026}. Een medewerker van Meta vroeg hulp aan de agent via een intern forum en in plaats van gewoon op de vraag te antwoorden, plaatste de agent het antwoord direct op het forum. Daarna volgde de medewerker bijkomende foutieve instructies van de agent op, waardoor gedurende bijna twee uur gevoelige bedrijfsdata zichtbaar was voor personen zonder de juiste toegangsrechten~\autocite{CyberMagazine2026}. De kern van dit probleem lag natuurlijk bij het hebben van te veel autonomie van de AI-agent en de te weinige toegangscontroles. Als dit al kan gebeuren bij een van de meest technologisch geavanceerde bedrijven van de wereld, wat zijn de risico's dan in de financiële sector? Banken werken met nog veel gevoeligere data en vallen onder een strengere regelgeving en deze beginnen ook AI-agents in te zetten in hun interne processen. Op dit moment bestaat er nog geen standaardaanpak om AI-agents binnen financiële instellingen veilig toegang te geven tot interne systemen en data. Bestaande beveiligingsmethoden zijn ontworpen voor mensen of traditionele software, maar niet voor autonome AI-agents die zelfstandig nadenken en acties uitvoeren. Dit onderzoek richt zich op IT-security teams binnen de financiële sector en stelt de vraag: hoe kunnen banken hun data beter beschermen tegen ongeoorloofde toegang door LLM-agents, met een combinatie van toegangscontrole en runtime-validatie, gevalideerd via een proof of concept?
 
 %----------------------------------------------------------------------
-\section{Hoofdonderzoeksvraag}
-\label{sec:hoofdonderzoeksvraag}
+\subsection{Onderzoeksvraag}\label{sec:hoofdonderzoeksvraag}
 %----------------------------------------------------------------------
 
 Hoe kunnen banken hun data beter beschermen tegen ongeoorloofde toegang door LLM-agents, met een combinatie van toegangscontrole en runtime-validatie, gevalideerd via een proof of concept?
 
 %----------------------------------------------------------------------
-\section{Methodologie probleemdeelvragen}
-\label{sec:methodologiepdv}
+\section{Literatuurstudie}\label{sec:literatuurstudie}
+
+De literatuurstudie onderzoekt de beveiligingsrisico's van autonome LLM-agents binnen financiële instellingen, de eigenschappen die deze systemen kwetsbaar maken, bestaande praktijkincidenten en de relevante wettelijke vereisten. Daarnaast wordt onderzocht welke beveiligingsmethoden, controletechnieken en richtlijnen momenteel beschikbaar zijn om deze risico's te beperken. Op basis van wetenschappelijke literatuur, praktijkvoorbeelden en officiële standaarden wordt een theoretisch kader opgebouwd dat als basis dient voor de verdere methodologie en de proof of concept.
+
+\subsection{Risico's van autonome LLM-agents}
+
+Autonome LLM-agents kunnen verschillende vormen van ongeautoriseerde datatoegang veroorzaken binnen financiële instellingen. In het document van \textcite{OWASPAgentic2025} worden de tien grootste beveiligingsrisico's voor agentic applications beschreven. Voor financiële instellingen zijn vooral Agent Goal Hijack (ASI01), Tool Misuse (ASI02) en Identity \& Privilege Abuse (ASI03) relevant. Via indirecte promptinjectie kunnen aanvallers een agent manipuleren om gevoelige gegevens vrij te geven of ongewenste acties uit te voeren. Daarnaast kunnen agents misbruik maken van systemen waarvoor zij te ruime toegangsrechten kregen. Aanvallers kunnen bovendien proberen hogere rechten te verkrijgen via gedeelde accounts of samenwerkende agents.
+
+Ook \textcite{Rajagopalan2026} wijzen erop dat agentic AI verschillende aanvalsvlakken combineert, waaronder prompts, tools, databronnen en sessiegeheugen. Zonder voldoende beveiliging kan dit leiden tot privilege escalation, ongeautoriseerde data-opvragingen en het uitlekken van vertrouwelijke informatie. Het rapport van \textcite{DNBAFM2024} bevestigt dat financiële instellingen bijzonder kwetsbaar zijn omdat zij grote hoeveelheden gevoelige klantgegevens verwerken. Daarom mag generatieve AI volgens het rapport enkel gebruikt worden binnen streng beveiligde omgevingen met aangepast risicobeheer.
+
+\subsection{Verschillen tussen LLM-agents en klassieke software}
+
+Verschillende auteurs benadrukken dat LLM-agents fundamenteel verschillen van traditionele software. Volgens \textcite{Rajagopalan2026} volgen LLM-agents geen vast uitvoeringsproces, waardoor hun gedrag moeilijk voorspelbaar en moeilijk testbaar is. Daarnaast kunnen zij geen onderscheid maken tussen data en instructies, waardoor kwaadaardige input verwerkt kan worden als geldige opdracht.
+
+In het document van \textcite{OWASPTop10LLM2025} worden bijkomende kwetsbaarheden beschreven die specifiek verbonden zijn aan LLM-systemen. Zo kunnen gevoelige gegevens of bedrijfsinformatie via antwoorden van het model worden vrijgegeven zonder expliciete vraag van de gebruiker. Daarnaast beschrijft OWASP het concept van Excessive Agency, waarbij agents te veel autonomie en toegangsrechten krijgen, waardoor manipulatie ernstige gevolgen kan hebben.
+
+De studie van \textcite{Prucha2025} vergelijkt LLM-agents met klassieke RPA-software aan de hand van praktijktests. Terwijl traditionele software voorspelbaar gedrag vertoonde, maakten LLM-agents fouten door hallucinaties, contextverlies en onverwacht gedrag. Hierdoor wordt het moeilijker om te garanderen dat agents uitsluitend toegang krijgen tot strikt noodzakelijke gegevens.
+
+\subsection{Praktijkincidenten en datalekken}
+
+De risico's van autonome agents hebben zich reeds in de praktijk voorgedaan.\textcite{Guardian2026} beschrijven het Meta-incident van maart 2026 waarbij een AI-agent foutieve instructies gaf aan een medewerker. Hierdoor was gevoelige bedrijfsinformatie gedurende bijna twee uur zichtbaar voor onbevoegde personen. De oorzaak lag bij een combinatie van te ruime autonomie en onvoldoende toegangscontrole.
+
+Daarnaast beschrijven \textcite{Harang2025} het EchoLeak-incident bij Microsoft 365 Copilot. Een aanvaller verstopte kwaadaardige instructies in een e-mail. Toen een medewerker Copilot vroeg om de e-mails samen te vatten, voerde de agent onbewust deze verborgen instructies uit en stuurde interne bestanden door naar een externe server. Microsoft classificeerde dit incident als een ernstig beveiligingslek met een officieel CVE-nummer.
+
+Deze incidenten tonen aan dat kwetsbaarheden in autonome agents niet louter theoretisch zijn, maar reeds concrete gevolgen hebben gehad voor organisaties.
+
+\subsection{Wetgeving en compliance}
+
+Naast technische risico's moeten financiële instellingen rekening houden met regelgeving zoals GDPR en DORA. Volgens \textcite{GDPR2016} moeten organisaties passende technische en organisatorische maatregelen nemen om persoonsgegevens te beveiligen. Artikel 32 vermeldt onder andere encryptie, gecontroleerde toegang en regelmatige beveiligingstesten. Voor LLM-agents betekent dit dat zij enkel toegang mogen krijgen tot gegevens die noodzakelijk zijn voor hun taak.
+
+Daarnaast verplicht \textcite{DORA2022} financiële instellingen om een uitgebreid framework voor digitale risicobeheersing te implementeren. Dit omvat continue monitoring, logging van incidenten en regelmatige beveiligingstests. Deze verplichtingen gelden eveneens voor externe leveranciers zoals cloudplatformen en AI-diensten.
+
+Uit de analyse van \textcite{Marjanov2023} blijkt bovendien dat organisaties vaak problemen ondervinden door onvoldoende toegangscontrole, ontbrekende logging en een gebrek aan periodieke beveiligingstesten. Deze vaststellingen zijn rechtstreeks relevant voor de inzet van autonome LLM-agents binnen financiële instellingen.
+
+\subsection{Bestaande beveiligingsmethoden en controletechnieken}
+
+De literatuur beschrijft verschillende methoden om de toegang van autonome AI-agents te beperken en hun gedrag tijdens de uitvoering te controleren. In de studie van \textcite{Fleming2024} wordt een systeem voorgesteld waarbij een externe AI-agent fungeert als bewaker die toegangsrechten beheert. Deze aanpak biedt een flexibele en adaptieve vorm van toegangscontrole.
+
+Daarnaast beschrijven \textcite{Ji2026} een verplicht toegangscontrolesysteem op basis van ABAC, waarbij rechten worden toegekend op basis van kenmerken van gebruikers, systemen en data. Hoewel deze methode zeer nauwkeurig is, blijkt de implementatie binnen bestaande systemen complex. In de paper van \textcite{Shi2025} wordt Progent voorgesteld, een systeem dat via programmeerbare regels bepaalt welke acties een agent mag uitvoeren.
+
+Voor runtime-controle beschrijven \textcite{Wang2025} het systeem ProbGuard, dat tijdens de uitvoering voorspelt of een actie van een agent potentieel onveilig is. Daarnaast beschrijft \textcite{Rose2024} het Zero Trust-principe, waarbij geen enkele gebruiker of systeem automatisch vertrouwd wordt en alle acties continu geverifieerd moeten worden.
+
+\subsection{Richtlijnen en standaarden}
+
+Naast technische oplossingen bestaan ook verschillende richtlijnen en standaarden die aanbevelingen formuleren voor het beveiligen van autonome AI-systemen. Het AI Risk Management Framework van \textcite{Tabassi2023} beschrijft hoe organisaties AI-risico's kunnen beheren via de stappen Govern, Map, Measure en Manage. Het framework geeft aanbevelingen rond veilige en verantwoorde AI-toepassingen in gereguleerde omgevingen.
+
+Daarnaast somt \textcite{OWASPTop10LLM2025} de belangrijkste beveiligingsrisico's voor LLM-toepassingen op en formuleert het concrete aanbevelingen zoals least-privilege toegang, monitoring en inputvalidatie. Ook GDPR en DORA bevatten relevante verplichtingen rond toegangscontrole, logging en dataminimalisatie.
+
+De verschillende richtlijnen en standaarden vormen samen een belangrijk referentiekader voor het ontwerp van een veilige en conforme beveiligingsoplossing voor autonome LLM-agents binnen financiële instellingen.
+
+\section{Methodologie}\label{sec:methodologie}
+
+De methodologie beschrijft hoe het onderzoek praktisch zal worden uitgevoerd om de hoofdonderzoeksvraag te beantwoorden. Het onderzoek bestaat uit vier opeenvolgende fasen. Eerst wordt een theoretische basis opgebouwd via een literatuurstudie. Vervolgens worden de risico's, vereisten en beveiligingsnoden geanalyseerd binnen de context van financiële instellingen. Daarna wordt een proof of concept ontworpen en geïmplementeerd waarin beveiligingsmaatregelen voor autonome LLM-agents worden toegepast. Tot slot wordt de effectiviteit van deze maatregelen geëvalueerd aan de hand van gesimuleerde aanvalsscenario's.
+
+\subsection{Fase 1: Literatuurstudie}
+
+In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd om een theoretische basis te leggen voor het onderzoek. Wetenschappelijke artikels, officiële richtlijnen, industriestandaarden en praktijkvoorbeelden worden geanalyseerd om inzicht te krijgen in de risico's van autonome LLM-agents binnen financiële instellingen.
+
+Tijdens deze fase wordt onderzocht welke vormen van ongeautoriseerde datatoegang kunnen ontstaan bij het gebruik van autonome AI-agents. Daarbij wordt gekeken naar aanvalsvlakken zoals promptinjectie, misbruik van tools, privilege escalation en ongecontroleerde toegang tot externe databronnen of sessiegeheugen. Daarnaast wordt onderzocht welke eigenschappen van LLM-agents deze risico's groter maken dan bij klassieke software, zoals hun dynamisch gedrag, beperkte voorspelbaarheid en het ontbreken van een duidelijke scheiding tussen data en instructies.
+
+Verder worden bestaande praktijkincidenten en gekende beveiligingslekken geanalyseerd om aan te tonen dat deze risico's zich reeds in realistische situaties hebben voorgedaan. Ook relevante regelgeving en standaarden zoals GDPR, DORA, OWASP Top 10 for LLM Applications en het NIST AI Risk Management Framework worden onderzocht om te bepalen welke beveiligings- en compliancevereisten van toepassing zijn binnen financiële instellingen.
+
+Tot slot wordt onderzocht welke bestaande methoden gebruikt kunnen worden om autonome agents te beveiligen. Hierbij wordt gekeken naar technieken voor toegangscontrole, runtime-monitoring, Zero Trust-principes en gedragscontrole van AI-agents tijdens hun werking.
+
+\subsection{Fase 2: Analyse van de risico's en vereisten}
+
+In de tweede fase worden de bevindingen uit de literatuurstudie geanalyseerd en gestructureerd. De verschillende dreigingen en aanvalsvectoren worden gecategoriseerd op basis van de manier waarop ongeautoriseerde toegang ontstaat, bijvoorbeeld via tools, externe databronnen of sessiegeheugen.
+
+Daarnaast wordt een vergelijking gemaakt tussen klassieke software en autonome LLM-agents. Hierbij worden criteria zoals voorspelbaarheid, autonomie, controleerbaarheid en aantal aanvalsvlakken geanalyseerd. Deze vergelijking verduidelijkt waarom traditionele beveiligingsmaatregelen onvoldoende bescherming bieden voor autonome agents.
+
+Ook de geanalyseerde praktijkincidenten worden verder onderzocht. Per incident wordt gekeken naar de oorzaak van het probleem, de impact op de organisatie en de lessen die hieruit geleerd kunnen worden. Hierdoor ontstaat een duidelijk beeld van hoe deze kwetsbaarheden zich in de praktijk manifesteren.
+
+Vervolgens worden de wettelijke en technische vereisten samengebracht in een overzicht van beveiligingscriteria waaraan een oplossing voor autonome LLM-agents moet voldoen. Daarbij wordt specifiek gekeken naar vereisten rond toegangscontrole, logging, monitoring, dataminimalisatie en samenwerking met externe AI-diensten.
+
+Ten slotte worden bestaande beveiligingsmethoden en richtlijnen geëvalueerd op basis van hun toepasbaarheid binnen financiële instellingen. De verschillende technieken worden met elkaar vergeleken op vlak van effectiviteit, complexiteit, schaalbaarheid en praktische implementatie. Op basis hiervan wordt bepaald welke beveiligingsmaatregelen gebruikt zullen worden in de proof of concept.
+
+\subsection{Fase 3: Ontwerp en implementatie van het proof of concept}
+
+In de derde fase wordt een proof of concept ontwikkeld waarin de geselecteerde beveiligingsmaatregelen praktisch worden toegepast binnen een gesimuleerde financiële omgeving. Hierbij wordt een autonome AI-agent geïntegreerd in een fictieve bankomgeving met gesimuleerde financiële data.
+
+Het ontwerp van de oplossing steunt op het principe van Separation of Concerns, waarbij elke agent enkel toegang krijgt tot de gegevens en functionaliteiten die noodzakelijk zijn voor zijn specifieke taak. Daarnaast wordt een systeem voor dynamische toegangscontrole uitgewerkt waarbij agents tijdelijke rechten kunnen aanvragen via een verdeeld beslissingsmodel.
+
+Naast toegangscontrole wordt ook runtime-monitoring geïntegreerd zodat het gedrag van de agents tijdens hun werking continu gecontroleerd kan worden. Hiervoor worden technieken toegepast zoals logging, monitoring en Zero Trust-validatie van acties en data-opvragingen.
+
+Binnen de proof of concept worden verschillende aanvalsscenario's nagebootst, waaronder promptinjectie, ongeautoriseerde data-aanvragen en pogingen om toegangscontrole te omzeilen. Hiervoor wordt gebruikgemaakt van observabilityplatformen zoals Langfuse om alle acties van de agents te registreren en te analyseren.
+
+Het resultaat van deze fase is een werkende implementatie van een beveiligde agentic omgeving waarin verschillende beveiligingsmaatregelen gecombineerd worden om ongeautoriseerde datatoegang te beperken.
+
+\subsection{Fase 4: Evaluatie en analyse van de resultaten}
+
+In de laatste fase wordt de effectiviteit van de geïmplementeerde beveiligingsmaatregelen geëvalueerd. De verschillende aanvalsscenario's worden uitgevoerd binnen de testomgeving en de resultaten worden geanalyseerd op basis van vooraf bepaalde criteria.
+
+Tijdens deze evaluatie wordt onderzocht in welke mate de beveiligingsmaatregelen ongeautoriseerde toegang konden blokkeren of detecteren. Daarnaast wordt geanalyseerd welke technieken het meest effectief zijn binnen een financiële context en welke beperkingen of zwaktes nog aanwezig zijn.
+
+Op basis van de resultaten worden eventuele verbeteringen of aanpassingen aan de oplossing doorgevoerd. De verzamelde gegevens worden vervolgens gebruikt om een onderbouwde conclusie te formuleren over de effectiviteit van toegangscontrole en gedragsmonitoring voor autonome LLM-agents binnen financiële instellingen.
+
+Deze evaluatie vormt uiteindelijk het antwoord op de hoofdonderzoeksvraag en biedt aanbevelingen voor het veilig implementeren van autonome AI-agents binnen gereguleerde omgevingen.
+
+%----------------------------------------------------------------------
+\section{Verwachte Resultaten}\label{sec:verwachte-resultaten}
 %----------------------------------------------------------------------
 
-\subsection{DV1: Welke soorten ongeautoriseerde datatoegang kunnen LLM-agents veroorzaken in financiële instellingen?}
-
-\textbf{Fase 1: literatuurstudie}
-
-Om een overzicht te krijgen van de soorten ongeautoriseerde datatoegang die LLM-agents kunnen veroorzaken in financiële instellingen, wordt een literatuuronderzoek uitgevoerd op volgende bronnen. In het document van \textcite{OWASPAgentic2025} worden de tien grootste beveiligingsrisico's voor agentic applications beschreven. Voor financiële instellingen zijn drie dreigingen erg relevant. Bij Agent Goal Hijack (ASI01) kunnen aanvallers een AI-agent misleiden via indirecte prompt-injectie in e-mails, kalenders of documenten, waardoor de agent gevoelige data lekt of functies misbruikt. Bij Tool Misuse (ASI02) gebruikt een agent systemen of functies waarvoor hij te veel toegangsrechten heeft. Hierdoor kan de agent klantgegevens opvragen of delen die niet nodig zijn voor de uitvoering van de taak. Bij Identity \& Privilege Abuse (ASI03) proberen aanvallers hogere toegangsrechten te krijgen via gedeelde accounts of samenwerkende AI-agents. Daardoor kunnen vertrouwelijke financiële gegevens bekeken of misbruikt worden. In de paper van \textcite{Rajagopalan2026} wordt beschreven dat agentic AI belangrijke gegevensprocessen kan automatiseren, maar dat bestaande beveiligingsmaatregelen vaak te eenvoudig kunnen omzeild worden. De auteurs onderscheiden vier aanvalsvlakken die kunnen leiden tot ongeautoriseerde toegang tot gegevens, zoals systemen voor databaseopvragingen en API-calls, externe databronnen zoals documentopslag en AI-kennisbanken, en sessiegeheugen waarin gevoelige klant- en transactiegegevens worden opgeslagen. Zonder voldoende beveiliging kan dit leiden tot ongeautoriseerde toegang tot gegevens, hogere toegangsrechten voor aanvallers en het uitlekken van inloggegevens van AI-workflows. In het rapport van \textcite{DNBAFM2024} wordt bevestigd dat financiële instellingen over zeer grote hoeveelheden gevoelige klantinformatie beschikken. Het gebruik van generatieve AI kan leiden tot het uitlekken van vertrouwelijke data. Volgens het rapport mag generatieve AI daarom alleen in beveiligde omgevingen worden gebruikt. Instellingen moeten zorgen voor goed risicobeheer dat ook rekening houdt met de risico's rond data en AI-modellen.
-
-\textbf{Fase 2: Dreigingen categoriseren}
-
-Op basis van de literatuurstudie worden de gevonden dreigingen verdeeld in verschillende categorieën. De soorten ongeautoriseerde datatoegang worden gegroepeerd volgens de manier waarop toegang wordt verleend, zoals via systemen en hulpmiddelen, externe databronnen of opgeslagen sessiegegevens en contextinformatie. Voor elke categorie wordt een concreet voorbeeld uitgewerkt binnen een financiële instelling. Het resultaat is een duidelijk gestructureerd overzicht dat dient als basis voor de aanvalsscenario's in de proof of concept.
-
-\subsection{DV2: Welke eigenschappen van LLM-agents maken deze risico's groter dan bij klassieke software?}
-
-\textbf{Fase 1: literatuurstudie}
-
-Om te begrijpen waarom LLM-agents grotere beveiligingsrisico's vormen dan traditionele software wordt een literatuuronderzoek uitgevoerd op de volgende bronnen. In de paper van \textcite{Rajagopalan2026} worden vier eigenschappen beschreven die LLM-agents fundamenteel anders maken dan klassieke software. Ten eerste volgen LLM-agents geen vast uitvoeringsproces, waardoor hun gedrag moeilijk vooraf te testen of analyseren is. Ten tweede kunnen LLM-agents geen onderscheid maken tussen data en instructies, waardoor kwaadaardige instructies bijvoorbeeld in een financieel rapport door het systeem behandeld worden als betrouwbare normale opdrachten. Ten derde hebben agentic systemen vier verschillende aanvalsvlakken tegelijk, namelijk prompts, tools, data en sessiegeheugen, zoals eerder beschreven in DV1. Aanvallers kunnen deze combineren om toegang te krijgen die via één enkel aanvalsvlak niet mogelijk zou zijn. Ten vierde zijn agents dynamisch van aard omdat ze van identiteit kunnen veranderen, sub-agents kunnen aanmaken en toegangsrechten kunnen doorgeven. Hierdoor werken de traditionele autorisatiemodellen minder goed. In het document van \textcite{OWASPTop10LLM2025} worden kwetsbaarheden beschreven die rechtstreeks voortkomen uit de werking van LLM-systemen. Zo kunnen LLM-applicaties gevoelige gegevens, inloggegevens of bedrijfsinformatie vrijgeven via hun antwoorden, zonder dat gebruikers hier expliciet naar vragen. Bij klassieke software gebeurt dit meestal alleen door programmeerfouten of verkeerde configuraties. Daarnaast beschrijft OWASP het concept van Excessive Agency, waarbij LLM-agents te veel zelfstandigheid en toegangsrechten krijgen. Hierdoor kan een agent ongewenste acties uitvoeren wanneer hij wordt gemanipuleerd. Tot slot zorgt het gebruik van AI-kennisbanken voor nieuwe manieren waarop ongeautoriseerde toegang kan ontstaan, iets wat in klassieke relationele systemen niet voorkomt. In de studie van \textcite{Prucha2025} worden LLM-agents direct vergeleken met klassieke RPA-software aan de hand van praktijktests. Terwijl de klassieke RPA-software alle tests succesvol uitvoerde, maakten LLM-agents fouten doordat ze onverwacht vastliepen of context verloren. De auteurs beschrijven LLM-agents als moeilijk te begrijpen en te controleren systemen, waarbij fouten en hallucinaties kunnen optreden. Door dit gebrek aan voorspelbaarheid is het voor financiële instellingen moeilijker om te garanderen dat een agent alleen toegang heeft tot de gegevens die strikt noodzakelijk zijn.
-
-\textbf{Fase 2: Vergelijkingstabel opstellen}
-
-Op basis van de literatuurstudie worden LLM-agents en klassieke software vergeleken in een overzichtstabel. Hier zullen we kijken naar criteria zoals hoe voorspelbaar het gedrag is, of data en instructies gescheiden worden, hoeveel aanvalsvlakken er zijn, wat de mate van zelfstandigheid is, en hoe controleerbaar het systeem is. De uitkomst toont waarom zelfstandige agents extra beveiligingsmaatregelen nodig hebben. Dit overzicht dient als basis voor de oplossingsgerichte deelvragen.
-
-\subsection{DV3: Welke bekende incidenten of demonstraties tonen aan dat LLM-agents kunnen leiden tot datalekken of misbruik?}
-
-\textbf{Fase 1: literatuurstudie}
-
-Om te bewijzen dat de risico's van LLM-agents al in de praktijk voor problemen hebben gezorgd, bekijken we drie bronnen. \textcite{Guardian2026} vat het Meta-incident van maart 2026 samen. Een AI-agent gaf een medewerker verkeerde instructies op een forum, waardoor bijna twee uur lang gevoelige bedrijfsdata zichtbaar was voor duizenden mensen die dit eigenlijk niet hadden mogen zien. De oorzaak lag bij een agent met te veel vrijheid en te weinig toegangscontrole. \textcite{Harang2025} beschrijven het EchoLeak incident bij Microsoft 365 Copilot. Een aanvaller stuurde een e-mail met verborgen instructies door naar een medewerker die daarna vroeg aan Copilot om e-mails samen te vatten. Zonder dat de medewerker dit wist, volgde de agent die verborgen instructies en stuurde interne bestanden automatisch door naar een externe server. Microsoft bestempelde dit als een ernstig lek met een officieel CVE-nummer. Het rapport van \textcite{DNBAFM2024} bevestigt dat generatieve AI in de financiële sector kan leiden tot het uitlekken van vertrouwelijke data en dat instellingen AI alleen mogen gebruiken onder strenge voorwaarden.
-
-\textbf{Fase 2: Overzicht incidenten}
-
-Op basis van de literatuurstudie worden de gevonden incidenten geanalyseerd aan de hand van vier onderdelen: de oorzaak van de aanval, de impact op de organisatie, de reactie van de betrokken partij en de lessen die eruit getrokken kunnen worden. Het resultaat is een duidelijk overzicht van twee gedocumenteerde incidenten dat toont hoe deze kwetsbaarheden zich in de praktijk al hebben voorgedaan. Het dient ook als basis voor de aanvalsscenario's in de proof of concept.
-
-\subsection{DV4: Welke eisen stellen GDPR en DORA aan toegangscontrole, logging en databeveiliging in dit soort context?}
-
-\textbf{Fase 1: literatuurstudie}
-
-Om te weten aan welke wettelijke verplichtingen een beveiligingsoplossing voor LLM-agents moet voldoen, bekijken we drie bronnen. De \textcite{GDPR2016} zegt in artikel 32 dat de juiste maatregelen moeten genomen worden door organisaties om persoonlijke gegevens te beveiligen. Dit kan bijvoorbeeld door data te versleutelen, en de beveiliging regelmatig te testen. Artikel 32 lid 4 stelt dat persoonlijke gegevens alleen gebruikt mogen worden volgens duidelijke instructies. Voor LLM-agents betekent dit dat ze enkel en alleen toegang krijgen tot wat strikt nodig is voor hun taak. \textcite{DORA2022} verplicht financiële instellingen tot een volledig framework voor digitale risicobeheersing, met constante opvolging, logging van incidenten en regelmatige beveiligingstests. Dit geldt ook voor externe partijen zoals cloudleveranciers en AI-diensten. \textcite{Marjanov2023} analyseerden echte GDPR-boetes om te ontdekken welke maatregelen toezichthouders verwachten. Ze stellen vast dat organisaties vooral in de problemen komen door toegangsrechten, het ontbreken van logging en het niet regelmatig testen van de bedrijfsmaatregelen. Een goed voorbeeld hiervan is een ziekenhuis waarbij medewerkers toegang hadden tot bijna alle dossiers, zelfs wanneer dit niet nodig was. Dit voorbeeld is direct vergelijkbaar met LLM-agents die zonder beperkingen toegang krijgen tot grote hoeveelheden interne data.
-
-\textbf{Fase 2: Overzicht wettelijke verplichtingen}
-
-Op basis van de onderzochte literatuur wordt dan een duidelijk overzicht gemaakt van wat GDPR en DORA verwachten op het vlak van toegangscontrole, logging, databeveiliging en de samenwerking met externe partijen. Hierbij wordt uitgelegd of deze verplichtingen uit GDPR, DORA of beide komen, en wat dit nu juist betekent voor het ontwerp van een beveiligingsoplossing voor LLM-agents. Dit overzicht dient als basis voor de beoordelingscriteria van de proof of concept in DV8.
+Het onderzoek verwacht aan te tonen dat een combinatie van toegangscontrole en runtime-validatie de risico's op ongeautoriseerde datatoegang door LLM-agents aanzienlijk kan beperken. Daarnaast wordt verwacht dat de proof of concept inzicht zal geven in welke beveiligingsmaatregelen het meest effectief zijn binnen een financiële context. De vergelijking tussen klassieke software en autonome AI-agents zal ook verduidelijken waarom bestaande beveiligingsmethoden onvoldoende bescherming bieden voor deze nieuwe systemen.
 
 %----------------------------------------------------------------------
-\section{Methodologie oplossingsdeelvragen}
-\label{sec:methodologieodv}
+\section{Conclusie}\label{sec:conclusie}
 %----------------------------------------------------------------------
 
-\subsection{DV5: Welke methoden bestaan er om de toegang van autonome AI-agents tot interne systemen te beperken, en wat zijn de voor- en nadelen van elke methode?}
-
-\textbf{Fase 1: literatuurstudie}
-
-Om een overzicht te krijgen van bestaande toegangscontrolemethoden voor autonome AI-agents, wordt een literatuuronderzoek uitgevoerd op volgende bronnen. In de paper van \textcite{Fleming2024} wordt een systeem beschreven waarbij een externe AI als bewaker wordt ingezet. De externe AI is gespecialiseerd in het verdelen van rechten aan andere agents en deze beslist ook welke agent welke rechten en toegangen krijgt. Dit biedt een eventuele flexibele en adaptieve manier om het probleem op te lossen. In een andere paper \autocite{Ji2026} wordt een verplicht toegangscontrolesysteem voorgesteld op basis van ABAC, toegang op basis van kenmerken van de gebruiker, het systeem en de data. Dit systeem houdt bij welke informatie naar waar stroomt en blokkeert alle acties die verder gaan dan wat de gebruiker bedoelde. Dit is zeer nauwkeurig en aanpasbaar, maar wel heel complex om te installeren in een draaiend systeem. In een derde paper \autocite{Shi2025} wordt Progent beschreven. Dit is een systeem dat via programmeerbare regels bepaalt wat een AI-agent wel en niet mag doen. Dit systeem schijnt makkelijk toepasbaar te zijn op bestaande systemen, maar de regels moeten vooraf bepaald en ingesteld worden door een mens, waardoor configuratiefouten snel gemaakt worden.
-
-\textbf{Fase 2: Vergelijkingstabel opstellen}
-
-De gevonden methoden worden naast elkaar gezet en vergeleken op basis van enkele criteria zoals complexiteit, effectiviteit en toepasbaarheid in financiële instellingen. Zo gaan we in één oogopslag kunnen zien welke methode het beste past in deze context. Het resultaat is een shortlist van de meest geschikte methoden die verder uitgewerkt worden in de proof of concept.
-
-\subsection{DV6: Op welke manieren kan het gedrag van een autonome AI-agent tijdens zijn werking gecontroleerd worden om ongeautoriseerde datatoegang te detecteren of te stoppen?}
-
-\textbf{Fase 1: literatuurstudie}
-
-Om een overzicht te krijgen van bestaande technieken voor het controleren van het gedrag van autonome AI-agents tijdens hun werking, wordt een literatuuronderzoek uitgevoerd op volgende bronnen. In de wetenschappelijke paper van \textcite{Wang2025} wordt ProbGuard beschreven, een systeem dat het gedrag van een AI-agent tijdens zijn werking continu in de gaten houdt. Er wordt door dit systeem op voorhand voorspeld of een actie van de agent onveilig zal zijn en grijpt in voor het fout loopt. Dit is anders dan klassieke foutdetectie methodes die pas ingrijpen als het al fout is gegaan. In het officieel document van de Amerikaanse overheid \autocite{Rose2024} wordt het principe van ``Zero Trust'' beschreven. Dit betekent dat geen enkel systeem of gebruiker automatisch vertrouwd wordt, ook niet binnen interne netwerken. Alle acties moeten continu geverifieerd worden en voor AI-agents betekent dit dat elke datatoegang apart gecontroleerd en gelogd moet worden.
-
-\textbf{Fase 2: Overzicht van controletechnieken opstellen}
-
-Op basis van de literatuurstudie worden de gevonden controletechnieken naast elkaar gezet en vergeleken op basis van criteria zoals wanneer ze ingrijpen, hoe ze samenwerken met bestaande systemen en of ze toepasbaar zijn in een financiële omgeving. Het resultaat is een overzicht van de meest geschikte technieken die verder gebruikt worden in de proof of concept.
-
-\subsection{DV7: Welke bestaande richtlijnen of standaarden bieden concrete aanbevelingen voor het beveiligen van autonome AI-agents binnen gereguleerde omgevingen?}
-
-\textbf{Fase 1: literatuurstudie}
-
-Om een overzicht te krijgen van bestaande richtlijnen en standaarden die concrete aanbevelingen bieden voor het beveiligen van autonome AI-agents binnen gereguleerde omgevingen, worden volgende officiële documenten en erkende industriestandaarden geanalyseerd. Het framework van \textcite{Tabassi2023} beschrijft hoe organisaties AI-risico's kunnen beheren via vier stappen: Govern, Map, Measure en Manage. Het geeft concrete aanbevelingen over hoe je AI-systemen veilig en verantwoord inzet, ook in gereguleerde omgevingen. Het OWASP document \autocite{OWASPTop10LLM2025} somt de tien grootste beveiligingsrisico's op voor LLM-toepassingen, zoals prompt injectie en buitensporige agent autonomie. Per risico worden concrete aanbevelingen gegeven zoals least-privilege toegang en continue monitoring. We gebruiken ook opnieuw het officiële document van de Amerikaanse overheid \autocite{Rose2024} dat het principe van ``Zero Trust'' beschrijft. In het document \autocite{GDPR2016} kunnen we vinden dat de GDPR verplichtingen rond toegangscontrole, logging en dataminimalisatie oplegt. Voor AI-agents betekent dit dat ze alleen toegang mogen krijgen tot de data die strikt noodzakelijk is. In het officiële document \autocite{DORA2022} kunnen we vinden dat DORA specifieke eisen aan financiële instellingen rond digitale weerbaarheid, incidentbeheer en toegangscontrole oplegt. Dit is direct relevant voor het beveiligen van AI-agents binnen banken.
-
-\textbf{Fase 2: Vergelijking en prioritering van richtlijnen}
-
-Op basis van de literatuurstudie worden de gevonden richtlijnen en standaarden naast elkaar geplaatst en beoordeeld op basis van criteria zoals toepasbaarheid op autonome AI-agents, verplicht karakter binnen financiële instellingen en concreetheid van de aanbevelingen. Via een MoSCoW-analyse wordt bepaald welke aanbevelingen absoluut noodzakelijk zijn voor de proof of concept en welke optioneel zijn. Het resultaat is een geprioriteerde lijst van beveiligingseisen waaraan de oplossing moet voldoen.
-
-\subsection{DV8: Hoe effectief is een combinatie van toegangsbeperkingen en gedragscontrole in het voorkomen van ongeautoriseerde datatoegang door autonome AI-agents, getest via een proof of concept met gesimuleerde financiële data?}
-
-\textbf{Fase 1: Opzetten van de testomgeving}
-
-Om de effectiviteit van de geselecteerde beveiligingsmaatregelen te kunnen meten, zal een proof of concept worden opgezet. Hierbij zal een autonome AI-agent worden geconfigureerd die toegang heeft tot een gesimuleerde interne omgeving met fictieve financiële data. De beveiligingsmaatregelen die als meest geschikt werden geselecteerd uit DV5 en DV6 zullen op deze omgeving worden toegepast. De testomgeving zal zo worden ingericht dat ze de structuur van een intern banksysteem zo realistisch mogelijk nabootst, zonder gebruik te maken van echte klantgegevens.
-
-\textbf{Fase 2: Uitvoeren van de tests}
-
-Binnen de opgezette testomgeving zullen gerichte aanvalspogingen worden gesimuleerd om de effectiviteit van de beveiligingsmaatregelen te meten. Hierbij zal gedacht worden aan aanvallen zoals prompt injectie, ongeautoriseerde data-opvragingen en pogingen om de toegangscontrole te omzeilen. Per aanvalspoging zal worden bijgehouden of de beveiligingsmaatregel de toegang succesvol blokkeerde of detecteerde. Dit zal herhaald worden voor elke combinatie van maatregelen zodat een eerlijke vergelijking mogelijk is.
-
-\textbf{Fase 3: Evaluatie van de resultaten}
-
-Op basis van de uitgevoerde tests zullen de resultaten worden geanalyseerd en samengevat. Er zal worden berekend welk percentage van de gesimuleerde aanvalspogingen succesvol werd geblokkeerd of gedetecteerd door de beveiligingsmaatregelen. Daarnaast zullen de sterktes en zwaktes van de geteste combinatie van maatregelen worden beschreven. Het resultaat is een onderbouwde conclusie over welke combinatie van toegangsbeperkingen en gedragscontrole de meest effectieve bescherming biedt tegen ongeautoriseerde datatoegang door autonome AI-agents in financiële instellingen, en vormt zo het antwoord op de hoofdonderzoeksvraag.
-
-\textbf{Fase 4: Ontwerp en implementatie van de oplossing}
-
-Op basis van de methoden die in DV5 en DV6 werden geselecteerd, wordt in deze fase de beveiligingsoplossing verder uitgewerkt en effectief geïmplementeerd. Het ontwerp steunt op het principe van Separation of Concerns, een aanpak die al geruime tijd gebruikt wordt binnen softwareontwikkeling \autocite{South2025}, maar nog nauwelijks werd toegepast bij autonome AI-agents. Daarbij krijgt elke agent enkel toegang tot de gegevens en functies die nodig zijn om zijn specifieke taak uit te voeren. Een agent die verantwoordelijk is voor het ophalen van rekeninginformatie zal bijvoorbeeld geen toegang hebben tot fraudedetectie gegevens of interne audit logs. Om te vermijden dat alle toegangscontrole afhankelijk wordt van één centrale instantie, wordt gewerkt met een verdeeld beslissingsmodel op basis van een stemsysteem. Wanneer een agent tijdelijk bijkomende rechten nodig heeft, dient die een aanvraag in bij een groep andere agents. Die beoordelen vervolgens, op basis van de huidige context, of de aanvraag gerechtvaardigd is. Enkel wanneer voldoende agents akkoord gaan, worden de extra rechten tijdelijk toegekend. Op die manier wordt vermeden dat een foutief geconfigureerde of gecompromitteerde agent zelfstandig toegang kan verkrijgen tot informatie buiten zijn normale bevoegdheden. Daarnaast wordt runtime-monitoring geïntegreerd, zodat de activiteiten van de agents tijdens hun werking continu opgevolgd kunnen worden. Het eindresultaat van deze fase is een volledig werkende en gedocumenteerde implementatie die klaar is voor verdere testing.
-
-\textbf{Fase 5: Testen met Langfuse}
-
-Om de uitgevoerde tests op een overzichtelijke en controleerbare manier te evalueren, wordt gebruikgemaakt van Langfuse als observabilityplatform. Deze tool werd specifiek ontwikkeld voor de toepassingen met LLM's en registreert elke stap die een AI-agent uitvoert. Daarbij wordt onder meer vastgelegd welke data werd opgevraagd, welke tools werden gebruikt en wat de input en output van elke actie was. Hierdoor kan na een gesimuleerde aanval nauwkeurig worden nagegaan hoe de agent handelde, op welk moment het beveiligingssysteem tussenkwam en of de toegang correct werd geblokkeerd of gedetecteerd. Binnen de testomgeving worden verschillende aanvalsscenario's nagebootst, zoals promptinjectie, ongeautoriseerde data-aanvragen en pogingen om bestaande toegangscontroles te omzeilen. Elke test wordt volledig gelogd via Langfuse en daarna grondig geanalyseerd. Daarbij wordt per aanval bekeken of de beveiligingsmaatregelen correct reageerden en, indien dat niet het geval was, waar het precies fout liep. Dit proces wordt herhaald voor alle combinaties van beveiligingsmaatregelen, zodat de resultaten op een consistente en objectieve manier met elkaar vergeleken kunnen worden. Daarnaast maakt Langfuse het mogelijk om de verzamelde gegevens visueel weer te geven. Dat zorgt voor een duidelijker overzicht van de testresultaten en vereenvoudigt zowel de evaluatie als de uiteindelijke rapportering.
-
-\section{Timing}
-
-Dit onderzoek wordt uitgevoerd binnen het tijdskader van één academisch semester. De literatuurstudies van probleemdeelvragen 1 t.e.m. 4 afgerond in de eerste fase en dan worden de literatuurstudies van de plossingdeelvragen 5 t.e.m. 7 uitgewerkt in de tussenfase. In de laatste fase worden de implementatie en het testen van de proof of concept gedaan en deze nemen ook het grootste deel van de tijd in.
+Dit onderzoeksvoorstel focust op de beveiliging van autonome LLM-agents binnen financiële instellingen. Door middel van een literatuurstudie, analyse van incidenten en een proof of concept wordt onderzocht hoe banken hun data beter kunnen beschermen tegen ongeautoriseerde toegang. Het onderzoek combineert technische beveiligingsmaatregelen met wettelijke vereisten zoals GDPR en DORA, met als doel een beter inzicht te bieden in veilige en controleerbare AI-toepassingen binnen de financiële sector.
 
 \printbibliography[heading=bibintoc]
 
