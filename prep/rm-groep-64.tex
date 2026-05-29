@@ -29,6 +29,8 @@
 \specialisation{AI \& Data Engineering}
 
 \keywords{AI-agents, toegangscontrole, runtime-validatie, LLM-beveiliging, financiële sector}
+\usepackage{soul}
+\usepackage{xcolor}
 \sloppy
 \hbadness=10000
 \frenchspacing
@@ -44,13 +46,24 @@ Dit onderzoek richt zich op de beveiliging van autonome AI-agents binnen financi
 \section{Inleiding}\label{sec:inleiding}
 %----------------------------------------------------------------------
 
-Autonome AI-agents worden steeds meer ingezet binnen bedrijven. Ze kunnen zelfstandig beslissingen nemen en acties uitvoeren zonder dat iemand daar enige goedkeuring voor moet geven. In maart 2026 veroorzaakte zo'n AI-agent een zwaar beveiligingsincident binnen het bedrijf Meta~\autocite{Guardian2026}. Een medewerker van Meta vroeg hulp aan de agent via een intern forum en in plaats van gewoon op de vraag te antwoorden, plaatste de agent het antwoord direct op het forum. Daarna volgde de medewerker bijkomende foutieve instructies van de agent op, waardoor gedurende bijna twee uur gevoelige bedrijfsdata zichtbaar was voor personen zonder de juiste toegangsrechten~\autocite{CyberMagazine2026}. De kern van dit probleem lag natuurlijk bij het hebben van te veel autonomie van de AI-agent en de te weinige toegangscontroles. Als dit al kan gebeuren bij een van de meest technologisch geavanceerde bedrijven van de wereld, wat zijn de risico's dan in de financiële sector? Banken werken met nog veel gevoeligere data en vallen onder een strengere regelgeving en deze beginnen ook AI-agents in te zetten in hun interne processen. Op dit moment bestaat er nog geen standaardaanpak om AI-agents binnen financiële instellingen veilig toegang te geven tot interne systemen en data. Bestaande beveiligingsmethoden zijn ontworpen voor mensen of traditionele software, maar niet voor autonome AI-agents die zelfstandig nadenken en acties uitvoeren. Dit onderzoek richt zich op IT-security teams binnen de financiële sector en stelt de vraag: hoe kunnen banken hun data beter beschermen tegen ongeoorloofde toegang door LLM-agents, met een combinatie van toegangscontrole en runtime-validatie, gevalideerd via een proof of concept?
+Autonome AI-agents worden steeds meer ingezet binnen bedrijven. Ze kunnen zelfstandig beslissingen nemen en acties uitvoeren zonder dat iemand daar enige goedkeuring voor moet geven. In maart 2026 veroorzaakte zo'n AI-agent een zwaar beveiligingsincident binnen het bedrijf Meta~\autocite{Guardian2026}. Een medewerker van Meta vroeg hulp aan de agent via een intern forum en in plaats van gewoon op de vraag te antwoorden, plaatste de agent het antwoord direct op het forum. Daarna volgde de medewerker bijkomende foutieve instructies van de agent op, waardoor gedurende bijna twee uur gevoelige bedrijfsdata zichtbaar was voor personen zonder de juiste toegangsrechten~\autocite{CyberMagazine2026}. De kern van dit probleem lag natuurlijk bij het hebben van te veel autonomie van de AI-agent en de te weinige toegangscontroles. Als dit al kan gebeuren bij een van de meest technologisch geavanceerde bedrijven van de wereld, wat zijn de risico's dan in de financiële sector? Banken werken met nog veel gevoeligere data en vallen onder een strengere regelgeving en deze beginnen ook AI-agents in te zetten in hun interne processen. Op dit moment bestaat er nog geen standaardaanpak om AI-agents binnen financiële instellingen veilig toegang te geven tot interne systemen en data. Bestaande beveiligingsmethoden zijn ontworpen voor mensen of traditionele software, maar niet voor autonome AI-agents die zelfstandig nadenken en acties uitvoeren. Dit onderzoek richt zich op IT-security teams binnen de financiële sector en stelt de volgende \textbf{Hoofdonderzoeksvraag:}:
 
-%----------------------------------------------------------------------
-\subsection{Onderzoeksvraag}\label{sec:hoofdonderzoeksvraag}
-%----------------------------------------------------------------------
+\bigskip
+\textbf{Hoe kunnen banken hun data beter beschermen tegen ongeoorloofde toegang door LLM-agents, met een combinatie van toegangscontrole en runtime-validatie, gevalideerd via een proof of concept?}
+\bigskip
 
-Hoe kunnen banken hun data beter beschermen tegen ongeoorloofde toegang door LLM-agents, met een combinatie van toegangscontrole en runtime-validatie, gevalideerd via een proof of concept?
+Om deze hoofdonderzoeksvraag te beantwoorden, worden de volgende deelvragen onderzocht:
+
+\begin{enumerate}
+  \item \textbf{Welke beveiligingsrisico's brengen autonome LLM-agents specifiek mee voor financiële instellingen?}
+  \item \textbf{Waarin verschillen autonome LLM-agents van klassieke software op vlak van beveiliging, en waarom volstaan bestaande beveiligingsmethoden niet?}
+  \item \textbf{Welke wettelijke en compliance-vereisten (GDPR, DORA) zijn van toepassing op het gebruik van AI-agents binnen de financiële sector?}
+  \item \textbf{Welke toegangscontrolemethoden en runtime-validatietechnieken zijn momenteel beschikbaar voor het beveiligen van autonome AI-agents?}
+  \item \textbf{Welke methoden bestaan er om de toegang van autonome AI-agents tot interne systemen te beperken, en wat zijn de voor- en nadelen van elke methode?}
+  \item \textbf{Op welke manieren kan het gedrag van een autonome AI-agent tijdens zijn werking gecontroleerd worden om ongeautoriseerde datatoegang te detecteren of te stoppen?}
+  \item \textbf{Welke bestaande richtlijnen of standaarden bieden concrete aanbevelingen voor het beveiligen van autonome AI-agents binnen gereguleerde omgevingen?}
+  \item \textbf{Hoe effectief is een combinatie van toegangsbeperkingen en gedragscontrole in het voorkomen van ongeautoriseerde datatoegang door autonome AI-agents, getest via een proof of concept met gesimuleerde financiële data?}
+\end{enumerate}
 
 %----------------------------------------------------------------------
 \section{Literatuurstudie}\label{sec:literatuurstudie}
