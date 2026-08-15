@@ -1,0 +1,323 @@
+%==============================================================================
+% Research Methods - Group assignment - pitch
+% Groep 64 - Simon Borghart, Emiel De Pelsmaeker, Simon Boey
+% Onderwerp binnen specialisatie: AI & Data Engineering
+%==============================================================================
+
+\documentclass[aspectratio=169]{beamer}
+
+%==============================================================================
+% Preamble
+%==============================================================================
+
+%---------- Layout ------------------------------------------------------------
+
+\usetheme{hogent}
+\usecolortheme{hgwhite}
+
+%---------- Packages ----------------------------------------------------------
+
+\usepackage[dutch]{babel}
+
+\usepackage{booktabs}
+\usepackage{multirow,multicol}
+\usepackage{eurosym}
+
+%---------- Metadata ----------------------------------------------------------
+
+\title{Pitch onderzoeksvoorstel.}
+\subtitle{AI \& Data Engineering -- Research Methods, 25-26, groep 64}
+\author{Simon Borghart \and Emiel De Pelsmaeker \and Simon Boey}
+\date{\today}
+
+%==============================================================================
+% Presentation content
+%==============================================================================
+
+\begin{document}
+
+{
+    \setbeamertemplate{background}[imgletter]
+        {beverage-coffee-computer-984536.jpg}{P}
+
+    \begin{frame}
+        \maketitle
+    \end{frame}
+}
+
+\begin{frame}
+    \frametitle{Inhoud.}
+
+    \tableofcontents
+\end{frame}
+
+%==============================================================================
+% Deel 1: Probleem
+%==============================================================================
+
+\section{Probleem.}
+
+\subsection{Context.}
+
+{
+
+\begin{frame}
+
+    {\huge \textbf{Uber's volledige jaarbudget voor AI-tools was al op,
+    nog voor het einde van het jaar.}}
+
+    \bigskip
+
+    \textbf{Praveen Neppalli Naga, CTO Uber, april 2026}
+
+\end{frame}
+}
+
+\begin{frame}
+    \frametitle{De trend: AI-agents in productie.}
+
+    \begin{itemize}
+        \item Bedrijven zetten steeds meer AI-agents in (bv.\ Claude Code,
+            Cursor) voor echt productiewerk, niet enkel als chatbot.
+        \item Elke stap die een agent zet kost tokens, en dus geld.
+        \item Klassieke caching (context-, semantische caching) is
+            ontworpen voor chatbots: die herhalen vaak gelijkaardige
+            vragen.
+        \item Een agent plant stap voor stap en hangt af van externe
+            data en omgevingscontext, waardoor klassieke caching hier
+            onvoldoende grip op heeft.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Concreet voorbeeld: Uber.}
+
+    \begin{itemize}
+        \item Uber gaf in 2025 \textbf{3,4 miljard dollar} uit aan
+            onderzoek en ontwikkeling.
+        \item Toch raakte het volledige jaarbudget voor AI-tools op,
+            nog voor het einde van het jaar (april 2026).
+        \item Reden, volgens CTO Praveen Neppalli Naga: een sterke
+            stijging van het gebruik van AI-coding-agents.
+        \item Ongeveer \textbf{11\%} van de live backend-code bij Uber
+            wordt intussen door AI-agents geschreven.
+        \item Bron: Yahoo Finance/Benzinga, oorspronkelijk gerapporteerd
+            door The Information.
+    \end{itemize}
+\end{frame}
+
+\subsection{Onderzoek bevestigt het probleem.}
+
+\begin{frame}
+    \frametitle{Wat toont onderzoek aan?}
+
+    \begin{itemize}
+        \item Zhang et al.\ (2025, NeurIPS) tonen aan dat bestaande
+            LLM-cachingtechnieken tekortschieten bij agenttoepassingen,
+            precies om de reden hierboven: de output van een agent hangt
+            af van externe data en omgevingscontext.
+        \item Hierdoor blijven operationele kosten en latency onnodig
+            hoog.
+        \item Met hun eigen oplossing (\emph{Agentic Plan Caching})
+            tonen zij een gemiddelde \textbf{kostenreductie van 50,31\%}
+            en een \textbf{latencyreductie van 27,28\%} aan.
+        \item Dit bevestigt zowel het probleem als de haalbaarheid van
+            een oplossing.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Probleemstelling.}
+
+    Bedrijven die AI-agents inzetten in productieomgevingen kampen met
+   \textbf{ hoge en moeilijk te voorspellen operationele kosten}. Klassieke
+    cachingtechnieken houden onvoldoende rekening met het meerstaps- en
+    contextafhankelijke karakter van agenttoepassingen. Daarnaast bestaan
+    er aanvullende technieken zoals prompt-compressie en model-routing,
+    maar een overzicht dat deze technieken specifiek afweegt voor
+    agenttoepassingen ontbreekt. IT-professionals die agenttoepassingen
+    ontwikkelen hebben daardoor weinig onderbouwde houvast bij het maken
+    van een keuze.
+\end{frame}
+
+\subsection{Onderzoeksvraag.}
+
+\begin{frame}
+    \frametitle{Onderzoeksvraag.}
+
+    \begin{quote}
+        \textbf{Welke combinatie van kostenoptimalisatietechnieken
+        (agentgeschikte caching, prompt-compressie en model-routing) is
+        het meest geschikt voor een platformteam zoals dat van Uber, om
+        de operationele kosten van AI-coding-agents in een
+        productieomgeving te verlagen, zonder de kwaliteit van de output
+        significant te verminderen?}
+    \end{quote}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Doelgroep.}
+
+    \begin{itemize}
+        \item Platformteams en engineering-leads bij middelgrote tot
+            grote softwareorganisaties.
+        \item Specifiek: de teams die verantwoordelijk zijn voor de
+            interne uitrol en het kostenbeheer van AI-coding-agents
+            (bv.\ Claude Code, Cursor).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Waarom dit onderwerp?}
+
+    \small
+    \begin{itemize}
+        \item \textbf{Specific}: drie met naam benoemde technieken
+            (agentgeschikte caching, prompt-compressie, model-routing)
+            binnen \'e\'en concreet probleem.
+        \item \textbf{Measurable}: kostenbesparing, latency en
+            kwaliteitsbehoud zijn kwantificeerbaar, uit literatuur \'en
+            uit een eigen PoC.
+        \item \textbf{Achievable}: publiek beschikbare tools, frameworks
+            en datasets, geen interne bedrijfsdata nodig.
+        \item \textbf{Realistic/Relevant}: recent peer-reviewed onderzoek
+            (NeurIPS 2025), verankerd in een publiek bedrijfsvoorbeeld
+            (Uber).
+        \item \textbf{Time-bound}: volledige aanpak uitgewerkt binnen
+            twaalf weken.
+    \end{itemize}
+\end{frame}
+
+%==============================================================================
+% Deel 2: Aanpak
+%==============================================================================
+
+\section{Aanpak.}
+
+\subsection{Deelvragen.}
+
+\begin{frame}
+    \frametitle{Deelvragen: probleemdomein.}
+
+    \begin{itemize}
+        \item Waarom schieten klassieke context- en semantische caching
+            specifiek tekort bij LLM-agenttoepassingen?
+        \item Welke factoren bepalen de kostenstructuur van
+            LLM-agenttoepassingen (bv.\ aantal planningsstappen,
+            promptlengte, modelkeuze per stap)?
+        \item Welke risico's ontstaan wanneer kosten verlaagd worden
+            zonder rekening te houden met de specifieke werking van
+            agenttoepassingen?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Deelvragen: oplossingsdomein.}
+
+    \begin{itemize}
+        \item Hoe werkt agentgeschikte caching (bv.\ het cachen van
+            planstructuren in plaats van volledige antwoorden), en
+            wanneer levert dit kostenbesparing op?
+        \item In welke mate is prompt-compressie toepasbaar op de
+            planningsstappen van een agent?
+        \item Hoe werkt model-routing voor agenttoepassingen, en welke
+            tools ondersteunen dit?
+        \item Hoe kan de impact van deze technieken op kosten en
+            kwaliteit gemeten en vergeleken worden bij
+            agenttoepassingen?
+    \end{itemize}
+\end{frame}
+
+\subsection{Methodologie.}
+
+\begin{frame}
+    \frametitle{Vier fasen, twaalf weken.}
+
+    \small
+    \begin{table}
+        \begin{tabular}{@{}lcp{5.8cm}@{}}
+        \toprule
+        \textbf{Fase} & \textbf{Weken} & \textbf{Milestone} \\
+        \midrule
+        1. Probleemdomein  & 1--3   & Probleembeschrijving + kostenanalyse \\
+        2. Literatuur       & 4--6   & Afwegingskader (caching, compressie, routing) \\
+        3. Technisch luik   & 7--10  & PoC agentgeschikte caching: kost, latency, tokens \\
+        4. Synthese         & 11--12 & Eindrapport \\
+        \bottomrule
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}
+
+    \begin{itemize}
+        \item \textbf{Wat}: agentgeschikte caching (cachen van
+            planstructuren) zelf implementeren en toepassen op een
+            testscenario met een AI-coding-agent.
+        \item \textbf{Meting}: tokenverbruik, kost per taak en latency,
+            telkens met en zonder caching.
+        \item \textbf{Vergelijking}: eigen resultaten afzetten tegen de
+            kostenreductie (50,31\%) en latencyreductie (27,28\%) die
+            Zhang et al.\ (2025) rapporteren.
+        \item \textbf{Waarom dit telt}: vult het cesuurcriterium
+            ``technische component'' in, naast het theoretische werk.
+    \end{itemize}
+\end{frame}
+
+\subsection{Resultaat.}
+
+\begin{frame}
+    \frametitle{Verwacht resultaat.}
+
+    \begin{itemize}
+        \item Een afwegingskader waarmee een platformteam zoals dat van
+            Uber kan kiezen tussen caching, prompt-compressie en
+            model-routing.
+        \item Concrete PoC-cijfers over kostenbesparing, latency en
+            kwaliteitsbehoud, vergeleken met Zhang et al.\ (2025).
+        \item Geen interne Uber-data nodig: publiek beschikbare tools,
+            frameworks en datasets volstaan.
+    \end{itemize}
+\end{frame}
+
+%==============================================================================
+% Tot slot
+%==============================================================================
+
+\section{Tot slot.}
+
+\begin{frame}
+    \frametitle{Bronnen.}
+
+    \small
+    \begin{itemize}
+        \item \textbf{Zhang et al.\ (2025)}, NeurIPS -- peer-reviewed
+            conferentiebijdrage, kernprobleem en -oplossing (caching).
+        \item \textbf{Chen et al.\ (2024)}, TMLR -- peer-reviewed
+            tijdschriftartikel, \emph{FrugalGPT} (caching, routing,
+            prompt-adaptatie).
+        \item \textbf{Zhen et al.\ (2025)}, ACL/INLG -- peer-reviewed
+            conferentiebijdrage, overzicht kostenefficiëntie.
+        \item \textbf{Jiang et al.\ (2023)}, \textbf{Regmi \& Liu
+            (2024--2025)}, \textbf{Dekoninck et al.\ (2024)} --
+            arXiv-preprints over prompt-compressie, caching en
+            model-routing.
+        \item \textbf{Jain (2026)}, Yahoo Finance/Benzinga -- nieuws\-bericht,
+            concreet bedrijfsvoorbeeld (Uber).
+    \end{itemize}
+
+    \medskip
+    \begin{minipage}{.7\textwidth}
+    Bewust een mix van brontypes: peer-reviewed publicaties,
+    arXiv-preprints \'en een actueel nieuwsbericht.
+    \end{minipage}
+\end{frame}
+
+\begin{frame}
+    {\Huge \textbf{Vragen?}}
+
+    \bigskip
+    Bedankt voor jullie aandacht.
+\end{frame}
+
+\end{document}
