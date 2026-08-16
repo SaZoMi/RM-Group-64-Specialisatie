@@ -115,7 +115,7 @@
         \item Zhang et al.\ (2025, NeurIPS) tonen aan dat bestaande
             LLM-cachingtechnieken tekortschieten bij agenttoepassingen,
             precies om de reden hierboven: de output van een agent hangt
-            af van externe data en omgevingscontext.
+            af van externe data en omgevingscontext. 
         \item Hierdoor blijven operationele kosten en latency onnodig
             hoog.
         \item Met hun eigen oplossing (\emph{Agentic Plan Caching})
@@ -123,6 +123,7 @@
             en een \textbf{latencyreductie van 27,28\%} aan.
         \item Dit bevestigt zowel het probleem als de haalbaarheid van
             een oplossing.
+	\item Chen et al. (2024) tonen met FrugalGPT tot 98\% kostenreductie (nog niet getest op agents).
     \end{itemize}
 \end{frame}
 
@@ -147,12 +148,10 @@
 
     \begin{quote}
         \textbf{Welke combinatie van kostenoptimalisatietechnieken
-        (agentgeschikte caching, prompt-compressie en model-routing) is
-        het meest geschikt voor een platformteam zoals dat van Uber, om
-        de operationele kosten van AI-coding-agents in een
-        productieomgeving te verlagen, zonder de kwaliteit van de output
+        (agentgeschikte caching, prompt-compressie en model-routing) is het meest geschikt om de operationele kosten van AI-coding-agents in productie te verlagen, zonder de kwaliteit van de output
         significant te verminderen?}
     \end{quote}
+	\text Doorheen dit onderzoek gebruiken we het geval van Uber.
 \end{frame}
 
 \begin{frame}
@@ -241,7 +240,7 @@
         \midrule
         1. Probleemdomein  & 1--3   & Probleembeschrijving + kostenanalyse \\
         2. Literatuur       & 4--6   & Afwegingskader (caching, compressie, routing) \\
-        3. Technisch luik   & 7--10  & PoC agentgeschikte caching: kost, latency, tokens \\
+        3. Technisch luik   & 7--10  & PoC: 4 condities op 20 SWE-bench Lite-taken \\
         4. Synthese         & 11--12 & Eindrapport \\
         \bottomrule
         \end{tabular}
@@ -249,18 +248,20 @@
 \end{frame}
 
 \begin{frame}
-
-    \begin{itemize}
-        \item \textbf{Wat}: agentgeschikte caching (cachen van
-            planstructuren) zelf implementeren en toepassen op een
-            testscenario met een AI-coding-agent.
-        \item \textbf{Meting}: tokenverbruik, kost per taak en latency,
-            telkens met en zonder caching.
-        \item \textbf{Vergelijking}: eigen resultaten afzetten tegen de
-            kostenreductie (50,31\%) en latencyreductie (27,28\%) die
-            Zhang et al.\ (2025) rapporteren.
-        \item \textbf{Waarom dit telt}: vult het cesuurcriterium
-            ``technische component'' in, naast het theoretische werk.
+	\frametitle{Technisch luik: fase 3.}
+     \begin{itemize}
+        \item \textbf{Wat}: drie technieken vergelijkend getest tegenover
+            een baseline: agentgeschikte caching (\emph{Agentic Plan
+            Caching}), prompt-compressie (\emph{LLMLingua}) en
+            model-routing (\emph{RouteLLM}).
+        \item \textbf{Taakset}: een vaste subset van 20 opgaven uit
+            \emph{SWE-bench Lite}, een publieke benchmark van reële
+            GitHub-issues die een coding-agent moet oplossen.
+        \item \textbf{Meting}: tokenverbruik, kost, latency en slaagkans,
+            per conditie op dezelfde 20 taken.
+        \item \textbf{Vergelijking}: eigen resultaten afzetten tegen
+            Zhang et al.\ (2025), Jiang et al.\ (2023) en Ong et
+            al.\ (2024).
     \end{itemize}
 \end{frame}
 
@@ -269,12 +270,16 @@
 \begin{frame}
     \frametitle{Verwacht resultaat.}
 
-    \begin{itemize}
+   \begin{itemize}
         \item Een afwegingskader waarmee een platformteam zoals dat van
             Uber kan kiezen tussen caching, prompt-compressie en
             model-routing.
-        \item Concrete PoC-cijfers over kostenbesparing, latency en
-            kwaliteitsbehoud, vergeleken met Zhang et al.\ (2025).
+        \item Concrete PoC-cijfers over tokenverbruik, kost, latency en
+            slaagkans, gemeten onder vier condities op dezelfde 20
+            SWE-bench Lite-taken.
+        \item Een toetsing van de bevindingen van Zhang et al.\ (2025),
+            Jiang et al.\ (2023) en Ong et al.\ (2024) aan een eigen,
+            gecontroleerde testopstelling.
         \item Geen interne Uber-data nodig: publiek beschikbare tools,
             frameworks en datasets volstaan.
     \end{itemize}
@@ -290,27 +295,22 @@
     \frametitle{Bronnen.}
 
     \small
-    \begin{itemize}
-        \item \textbf{Zhang et al.\ (2025)}, NeurIPS -- peer-reviewed
-            conferentiebijdrage, kernprobleem en -oplossing (caching).
-        \item \textbf{Chen et al.\ (2024)}, TMLR -- peer-reviewed
-            tijdschriftartikel, \emph{FrugalGPT} (caching, routing,
-            prompt-adaptatie).
-        \item \textbf{Zhen et al.\ (2025)}, ACL/INLG -- peer-reviewed
-            conferentiebijdrage, overzicht kostenefficiëntie.
-        \item \textbf{Jiang et al.\ (2023)}, \textbf{Regmi \& Liu
-            (2024--2025)}, \textbf{Dekoninck et al.\ (2024)} --
-            arXiv-preprints over prompt-compressie, caching en
-            model-routing.
-        \item \textbf{Jain (2026)}, Yahoo Finance/Benzinga -- nieuws\-bericht,
+   \begin{itemize}
+        \item \textbf{Zhang et al.\ (2025)}, NeurIPS - kernprobleem en
+            -oplossing: \emph{Agentic Plan Caching}.
+        \item \textbf{Jimenez et al.\ (2024)} - \emph{SWE-bench}, de
+            publieke benchmark achter de PoC-taakset.
+        \item \textbf{Jiang et al.\ (2023)}, \textbf{Ong et
+            al.\ (2024)} - \emph{LLMLingua} (compressie) en
+            \emph{RouteLLM} (routing), gebruikt in de PoC.
+        \item \textbf{Chen et al.\ (2024, TMLR)}, \textbf{Regmi \& Pun
+            (2024)}, \textbf{Liu et al.\ (2025)}, \textbf{Dekoninck et
+            al.\ (2024)}, \textbf{Zhen et al.\ (2025)} - aanvullende
+            peer-reviewed en arXiv-literatuur over kostenefficiëntie.
+        \item \textbf{Jain (2026)}, Yahoo Finance/Benzinga - nieuws\-bericht,
             concreet bedrijfsvoorbeeld (Uber).
     \end{itemize}
 
-    \medskip
-    \begin{minipage}{.7\textwidth}
-    Bewust een mix van brontypes: peer-reviewed publicaties,
-    arXiv-preprints \'en een actueel nieuwsbericht.
-    \end{minipage}
 \end{frame}
 
 \begin{frame}
