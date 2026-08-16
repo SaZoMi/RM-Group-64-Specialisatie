@@ -16,7 +16,7 @@
 \course{Research Methods, 2E1} 
 \assignmenttype{Groepsopdracht}
 \academicyear{2025-2026}
-\title{Kostenoptimalisatie van AI-coding-agents in productieomgevingen: een casus bij Uber}
+\title{Kostenoptimalisatie van AI-coding-agents in productieomgevingen: het geval van Uber}
 
 % TODO: English text? Comment or remove the lines above and uncomment the lines
 % below
@@ -27,14 +27,14 @@
 % \academicyear{2025-2026}
 % \title{Written preparation of research proposals}
 
+\author{Simon Boey}
+\email{simon.boey@student.hogent.be}
+
 \author{Simon Borghart}
 \email{simon.borghart@student.hogent.be}
 
 \author{Emiel De Pelsmaeker}
 \email{emiel.depelsmaeker@student.hogent.be}
-
-\author{Simon Boey}
-\email{simon.boey@student.hogent.be}
 
 \projectrepo{https://github.com/SaZoMi/RM-Group-64-Specialisatie.git}
 
@@ -45,7 +45,7 @@
 \begin{document}
 
 \begin{abstract}
-  Uber besteedde in 2025 3,4 miljard dollar aan onderzoek en ontwikkeling, en toch was het volledige AI-budget van het bedrijf in april 2026 al opgebruikt door een snelle stijging in het gebruik van AI-coding-agents zoals Claude Code \autocite{Jain2026}. Dit voorbeeld illustreert een probleem dat verder reikt dan één bedrijf: bestaande technieken voor het cachen van LLM-antwoorden, zoals context caching en semantische caching, zijn ontworpen voor chatbot-achtige toepassingen en schieten tekort bij AI-agenttoepassingen. Agenttoepassingen voeren immers meerdere planningsstappen na elkaar uit en hun output hangt af van externe data en omgevingscontext, waardoor klassieke caching daar beperkt bruikbaar is \autocite{Zhang2025}. Dit zorgt voor onnodig hoge operationele kosten en latency bij bedrijven die LLM-agenten inzetten in productie. Dit onderzoeksvoorstel beschrijft een geplande studie naar welke combinatie van kostenoptimalisatietechnieken het meest geschikt is om bij Uber de operationele kosten van AI-coding-agents te verlagen, waarbij naast agentgeschikte caching ook prompt-compressie en model-routing onderzocht worden. Op basis van een eerste literatuurstudie wordt een probleem- en oplossingsdomein afgebakend. Daarna volgt een voorstel van methodologie waarin de drie technieken via bestaande, in de literatuur onderbouwde implementaties (Agentic Plan Caching, LLMLingua en RouteLLM) vergelijkend getest worden op een vaste set coding-taken uit SWE-bench Lite, op kosten-, latency- en kwaliteitscriteria. Het onderzoek moet resulteren in een onderbouwd handvat voor Uber, en bij uitbreiding voor platformteams die AI-coding-agents zoals Claude Code of Cursor intern uitrollen en beheren bij grote softwareorganisaties, om LLM-kosten te beheersen zonder in te boeten op de productiviteit van deze tools.
+  Uber besteedde in 2025 3,4 miljard dollar aan onderzoek en ontwikkeling, en toch was het volledige AI-budget van het bedrijf in april 2026 al opgebruikt door een snelle stijging in het gebruik van AI-coding-agents zoals Claude Code \autocite{Jain2026}. Dit voorbeeld illustreert een probleem dat verder reikt dan één bedrijf: bestaande technieken voor het cachen van LLM-antwoorden, zoals context caching en semantische caching, zijn ontworpen voor chatbot-achtige toepassingen en schieten tekort bij AI-agenttoepassingen. Agenttoepassingen voeren immers meerdere planningsstappen na elkaar uit en hun output hangt af van externe data en omgevingscontext, waardoor klassieke caching daar beperkt bruikbaar is \autocite{Zhang2025}. Dit zorgt voor onnodig hoge operationele kosten en latency bij bedrijven die LLM-agenten inzetten in productie. Dit onderzoeksvoorstel beschrijft een geplande studie naar welke combinatie van kostenoptimalisatietechnieken het meest geschikt is om de operationele kosten van AI-coding-agents in productie te verlagen, waarbij naast agentgeschikte caching ook prompt-compressie en model-routing onderzocht worden. Op basis van een eerste literatuurstudie wordt een probleem- en oplossingsdomein afgebakend. Daarna volgt een voorstel van methodologie waarin de drie technieken via bestaande, in de literatuur onderbouwde implementaties (Agentic Plan Caching, LLMLingua en RouteLLM) vergelijkend getest worden op een vaste set coding-taken uit SWE-bench Lite, op kosten-, latency- en kwaliteitscriteria. Het onderzoek moet resulteren in een onderbouwd handvat voor platformteams die AI-coding-agents zoals Claude Code of Cursor intern uitrollen en beheren bij grote softwareorganisaties, zoals Uber, om LLM-kosten te beheersen zonder in te boeten op de productiviteit van deze tools.
 \end{abstract}
 
 \tableofcontents
@@ -59,18 +59,18 @@ Zhang et al. (2025) tonen aan dat bestaande LLM-cachingtechnieken, zoals context
 
 Daarnaast wordt in de vakliteratuur op technieken als prompt-compressie en model-routing gewezen als aanvullende manieren om kosten te verlagen \autocite{Chen2024}. Het ontbreekt echter aan een overzicht dat deze technieken specifiek afweegt in de context van agenttoepassingen, waar de klassieke aannames van caching niet zonder meer opgaan. Daardoor hebben platformteams die AI-coding-agents zoals Claude Code op schaal uitrollen binnen een softwareorganisatie, zoals bij Uber, momenteel weinig onderbouwde houvast bij het maken van een keuze.
 
-De specifieke doelgroep van dit onderzoek zijn platformteams en engineering-leads bij middelgrote tot grote softwareorganisaties, die verantwoordelijk zijn voor de interne uitrol en het kostenbeheer van AI-coding-agents. Dit is een concrete, afgebakende doelgroep, in tegenstelling tot IT-professionals in het algemeen: het gaat specifiek om de teams die de infrastructuurkeuzes rond agentgebruik maken, zoals welke caching-, compressie- of routingstrategie toegepast wordt.
+De specifieke doelgroep van dit onderzoek zijn platformteams en engineering-leads bij middelgrote tot grote softwareorganisaties, die verantwoordelijk zijn voor de interne uitrol en het kostenbeheer van AI-coding-agents. Meer specifiek gaat het om de teams die de infrastructuurkeuzes rond agentgebruik maken, zoals welke caching-, compressie- of routingstrategie toegepast wordt.
 
-Dit leidt tot de volgende hoofdonderzoeksvraag: 
+Dit leidt tot de volgende hoofdonderzoeksvraag:
 \begin{quote}
-  Welke combinatie van kostenoptimalisatietechnieken is het meest geschikt om bij Uber de operationele kosten van AI-coding-agents in productie te verlagen, zonder de kwaliteit van de output significant te verminderen?
+  Welke combinatie van kostenoptimalisatietechnieken is het meest geschikt om de operationele kosten van AI-coding-agents in productie te verlagen, zonder de kwaliteit van de output significant te verminderen?
 \end{quote}
 
-Deze hoofdvraag wordt opgesplitst in deelvragen binnen het probleemdomein en het oplossingsdomein. De deelvragen zijn algemeen geformuleerd voor AI-coding-agents in een productieomgeving, maar worden in dit onderzoek beantwoord vanuit de concrete situatie van Uber, dat AI-coding-agents zoals Claude Code op grote schaal inzet.
+Deze hoofdvraag wordt opgesplitst in deelvragen binnen het probleemdomein en het oplossingsdomein. De deelvragen zijn algemeen geformuleerd voor AI-coding-agents in een productieomgeving, en worden doorheen dit onderzoek geïllustreerd aan de hand van het geval van Uber, dat AI-coding-agents zoals Claude Code op grote schaal inzet.
 
 Deelvragen probleemdomein:
 \begin{itemize}
-  \item Waarom schieten klassieke context- en semantische caching specifiek tekort bij LLM-agenttoepassingen, zoals de AI-coding-agents die Uber inzet?
+  \item Waarom schieten klassieke context- en semantische caching specifiek tekort bij LLM-agenttoepassingen, zoals de AI-coding-agents die bedrijven als Uber inzetten?
   \item Welke factoren bepalen de kostenstructuur van LLM-agenttoepassingen, bijvoorbeeld het aantal planningsstappen, promptlengte en modelkeuze per stap?
   \item Welke risico's ontstaan wanneer kosten worden verlaagd zonder rekening te houden met de specifieke werking van agenttoepassingen, bijvoorbeeld op vlak van kwaliteitsverlies of onbetrouwbare planning?
 \end{itemize}
@@ -83,7 +83,7 @@ Deelvragen oplossingsdomein:
   \item Hoe kan de impact van deze technieken op kosten en kwaliteit gemeten en onderling vergeleken worden bij agenttoepassingen?
 \end{itemize}
 
-Het doel van dit onderzoek is een onderbouwd en vergelijkend overzicht te bieden van kostenoptimalisatietechnieken voor LLM-agenttoepassingen in productieomgevingen, primair gericht op Uber, en bij uitbreiding op vergelijkbare platformteams bij andere softwareorganisaties die AI-coding-agents op schaal uitrollen.
+Het doel van dit onderzoek is een onderbouwd en vergelijkend overzicht te bieden van kostenoptimalisatietechnieken voor LLM-agenttoepassingen in productieomgevingen, gericht op platformteams bij softwareorganisaties die AI-coding-agents op schaal uitrollen, zoals Uber.
 
 Dit onderzoeksvoorstel beperkt zich tot drie met naam benoemde technieken (agentgeschikte caching, prompt-compressie en model-routing) binnen één concreet probleemdomein, namelijk kostenbeheersing bij AI-coding-agents. Kostenbesparing, latency en kwaliteitsbehoud zijn daarbij kwantificeerbare grootheden die zowel uit de literatuur als uit de eigen proof-of-concept afgeleid kunnen worden. Zowel de literatuurstudie als de PoC zijn gebaseerd op bestaande, publiek beschikbare tools, frameworks en gepubliceerde datasets, zonder dat hiervoor toegang tot interne bedrijfsdata nodig is. Het probleem is bovendien recent aangetoond in peer-reviewed onderzoek en doet zich in de praktijk voor bij minstens één groot, publiek gedocumenteerd bedrijf. De volledige aanpak, inclusief literatuurstudie, PoC en eindredactie, is ten slotte uitgewerkt binnen de beschikbare 12 weken van dit onderzoekstraject, zoals verder toegelicht in sectie~\ref{sec:methodologie}.
 
@@ -104,6 +104,8 @@ Op het vlak van model-routing bieden Dekoninck et al. (2024) een verenigd theore
 
 Uit deze literatuur blijkt dat het probleem van beperkte cachebaarheid bij agenttoepassingen recent en concreet aangetoond is, en dat prompt-compressie en model-routing potentieel aanvullende oplossingen bieden. Vergelijkend onderzoek dat deze drie technieken samen afweegt specifiek voor agenttoepassingen is echter nog beperkt beschikbaar.
 
+Om deze drie technieken zelf op een representatieve en herhaalbare manier te kunnen vergelijken, is een gestandaardiseerde en automatisch beoordeelbare taakset nodig. Jimenez et al. (2024) ontwikkelen hiervoor SWE-bench, een benchmark van reële GitHub-issues waarbij een AI-coding-agent telkens een patch moet genereren die het issue oplost, en waarbij de correctheid van die patch automatisch getoetst wordt aan de bijhorende unit tests \autocite{Jimenez2024}. Deze benchmark is inmiddels een veelgebruikte standaard om coding-agents objectief te evalueren, en vormt de basis voor de eigen proof-of-concept in dit onderzoeksvoorstel.
+
 \section{Methodologie}%
 \label{sec:methodologie}
 
@@ -113,7 +115,7 @@ Om de onderzoeksvragen te beantwoorden wordt een gefaseerde aanpak voorgesteld, 
 
 \textbf{Fase 2, oplossingsdomein: literatuur (weken 4 tot 6).} Agentgeschikte caching, prompt-compressie en model-routing worden elk afzonderlijk beschreven aan de hand van de geraadpleegde vakliteratuur. Deze beschrijving wordt aangevuld met een vergelijkende analyse op basis van gepubliceerde experimentele resultaten over kostenbesparing, kwaliteitsbehoud en impact op latency, telkens getoetst aan de specifieke context van agenttoepassingen. Deze fase resulteert in een literatuurgebaseerd afwegingskader per techniek.
 
-\textbf{Fase 3, oplossingsdomein: praktische uitwerking (weken 7 tot 10).} Om het onderzoek te onderbouwen met eigen, empirisch bewijs naast de literatuur, wordt een proof-of-concept (PoC) uitgewerkt die drie condities test op dezelfde, vaste taakset. Als taakset wordt een vaste subset van 20 opgaven uit SWE-bench Lite gebruikt, een publiek beschikbare en veelgebruikte benchmark van reële GitHub-issues waarbij een AI-coding-agent telkens een patch moet genereren die het issue oplost \autocite{Jimenez2024}. Deze taken zijn representatief voor het soort backend-codeerwerk dat coding-agents bij Uber uitvoeren, en zijn dankzij de gestandaardiseerde SWE-bench-testsuite automatisch en objectief te beoordelen op correctheid (slaagt de gegenereerde patch voor de bijhorende unit tests, ja of nee).
+\textbf{Fase 3, oplossingsdomein: praktische uitwerking (weken 7 tot 10).} Om het onderzoek te onderbouwen met eigen, empirisch bewijs naast de literatuur, wordt een proof-of-concept (PoC) uitgewerkt die drie condities test op dezelfde, vaste taakset. Als taakset wordt een vaste subset van 20 opgaven uit SWE-bench Lite gebruikt, een publiek beschikbare en veelgebruikte benchmark van reële GitHub-issues waarbij een AI-coding-agent telkens een patch moet genereren die het issue oplost \autocite{Jimenez2024}. Deze taken zijn representatief voor het soort backend-codeerwerk dat coding-agents bij softwareorganisaties zoals Uber uitvoeren, en zijn dankzij de gestandaardiseerde SWE-bench-testsuite automatisch en objectief te beoordelen op correctheid (slaagt de gegenereerde patch voor de bijhorende unit tests, ja of nee).
 
 Dezelfde 20 taken worden viermaal uitgevoerd met een bestaand, open-source agentframework (bijvoorbeeld een minimale ReAct-achtige agent-loop), telkens onder een andere conditie:
 \begin{itemize}
@@ -132,12 +134,12 @@ Elke fase levert een concreet milestone op: een afgebakende probleembeschrijving
 \section{Verwachte resultaten}%
 \label{sec:resultaten}
 
-Het onderzoek moet een vergelijkend overzicht opleveren van kostenoptimalisatietechnieken voor LLM-agenttoepassingen. Voor elke techniek wordt een inschatting verwacht van de haalbare kostenbesparing, de invloed op kwaliteit en latency, en de situaties waarin de techniek het meest geschikt is. Daarnaast levert de proof-of-concept uit fase 3 concrete, zelf gemeten resultaten op over het tokenverbruik, de kost, de latency en de slaagkans van dezelfde 20 SWE-bench-Lite-taken onder vier condities (baseline, agentgeschikte caching, prompt-compressie en model-routing), wat toelaat de bevindingen uit de literatuur \autocite{Zhang2025, Jiang2023, Ong2024} te toetsen aan een eigen, gecontroleerde testopstelling op een representatieve coding-agenttaak. Op basis van beide bronnen wordt een afwegingskader verwacht dat Uber, en bij uitbreiding vergelijkbare platformteams, kan ondersteunen bij het maken van een onderbouwde keuze bij het ontwerpen van AI-coding-agents.
+Het onderzoek moet een vergelijkend overzicht opleveren van kostenoptimalisatietechnieken voor LLM-agenttoepassingen. Voor elke techniek wordt een inschatting verwacht van de haalbare kostenbesparing, de invloed op kwaliteit en latency, en de situaties waarin de techniek het meest geschikt is. Daarnaast levert de proof-of-concept uit fase 3 concrete, zelf gemeten resultaten op over het tokenverbruik, de kost, de latency en de slaagkans van dezelfde 20 SWE-bench-Lite-taken onder vier condities (baseline, agentgeschikte caching, prompt-compressie en model-routing), wat toelaat de bevindingen uit de literatuur \autocite{Zhang2025, Jiang2023, Ong2024} te toetsen aan een eigen, gecontroleerde testopstelling op een representatieve coding-agenttaak. Op basis van beide bronnen wordt een afwegingskader verwacht dat platformteams, zoals dat van Uber, kan ondersteunen bij het maken van een onderbouwde keuze bij het ontwerpen van AI-coding-agents.
 
 \section{Discussie en conclusie}%
 \label{sec:conclusie}
 
-Dit voorstel kadert een concreet en recent aangetoond probleem: klassieke LLM-cachingtechnieken schieten tekort bij AI-agenttoepassingen, waardoor de operationele kosten en latency van dergelijke toepassingen onnodig hoog blijven, zoals ook publiek geïllustreerd wordt door het budgetprobleem van Uber. Op basis hiervan wordt een onderzoek voorgesteld naar de effectiviteit van agentgeschikte caching, prompt-compressie en model-routing als oplossingsstrategieën. De voorgestelde methodologie combineert literatuuronderzoek met een eigen proof-of-concept op een vaste subset van SWE-bench Lite, waarbij telkens dezelfde 20 coding-taken onder vier condities worden getest met bestaande, in de literatuur onderbouwde implementaties (Agentic Plan Caching, LLMLingua en RouteLLM), met als doel een praktijkgericht en empirisch onderbouwd afwegingskader op te leveren voor Uber, binnen een tijdsbestek van 12 weken. Een mogelijke beperking van het onderzoek is de snelheid waarmee dit vakgebied evolueert, waardoor specifieke kostencijfers snel kunnen verouderen. Het voorgestelde afwegingskader is daarom opgezet om ook op langere termijn bruikbaar te blijven.
+Dit voorstel kadert een concreet en recent aangetoond probleem: klassieke LLM-cachingtechnieken schieten tekort bij AI-agenttoepassingen, waardoor de operationele kosten en latency van dergelijke toepassingen onnodig hoog blijven, zoals ook publiek geïllustreerd wordt door het budgetprobleem van Uber. Op basis hiervan wordt een onderzoek voorgesteld naar de effectiviteit van agentgeschikte caching, prompt-compressie en model-routing als oplossingsstrategieën. De voorgestelde methodologie combineert literatuuronderzoek met een eigen proof-of-concept op een vaste subset van SWE-bench Lite, waarbij telkens dezelfde 20 coding-taken onder vier condities worden getest met bestaande, in de literatuur onderbouwde implementaties (Agentic Plan Caching, LLMLingua en RouteLLM), met als doel een praktijkgericht en empirisch onderbouwd afwegingskader op te leveren voor platformteams zoals dat van Uber, binnen een tijdsbestek van 12 weken. Een mogelijke beperking van het onderzoek is de snelheid waarmee dit vakgebied evolueert, waardoor specifieke kostencijfers snel kunnen verouderen. Het voorgestelde afwegingskader is daarom opgezet om ook op langere termijn bruikbaar te blijven.
 
 \printbibliography[heading=bibintoc]
 
